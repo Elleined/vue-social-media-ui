@@ -5,4 +5,6 @@
   <main>
     HELLO
   </main>
+
+  <Button label="Submit" />
 </template>
