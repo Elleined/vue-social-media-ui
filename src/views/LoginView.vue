@@ -1,10 +1,11 @@
 <script setup lang="ts">
+
 </script>
 
 <template>
-  <main>
-    HELLO
-  </main>
-
-  <Button label="Submit" />
+HELLO
 </template>
+
+<style scoped>
+
+</style>
