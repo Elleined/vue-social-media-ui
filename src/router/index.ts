@@ -1,7 +1,8 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import LoginView from "@/views/LoginView.vue";
-import {usePrincipalStore} from "@/stores/PrincipalStore.ts";
+import {usePrincipalStore} from "@/stores/principalStore.ts";
 import HomeView from "@/views/HomeView.vue";
+import {routeGuard} from "@/router/routeGuard.ts";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,14 +24,7 @@ const router = createRouter({
       path: '/home',
       name: 'home',
       component: HomeView,
-      beforeEnter: (to, from, next) => {
-        const principalStore = usePrincipalStore()
-        if (!principalStore.getPrincipal()) {
-          next('/login') // Redirect to login
-          return
-        }
-        next() // Continue
-      }
+      beforeEnter: routeGuard,
     },
   ],
 })
