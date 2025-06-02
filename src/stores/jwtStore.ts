@@ -2,15 +2,15 @@ import {defineStore} from "pinia";
 import {ref} from "vue";
 import type User from "@/model/User.ts";
 
-export const usePrincipalStore = defineStore('user', () => {
-    const principal = ref<User>()
+export const useJWTStore = defineStore('jwt', () => {
+    const principal = ref<string>()
 
-    function getPrincipal(): User {
+    function getPrincipal(): string {
         return principal.value!
     }
 
-    function setPrincipal(user: User) {
-        principal.value = user
+    function setPrincipal(jwt: string) {
+        principal.value = jwt
     }
 
     return { principal, getPrincipal, setPrincipal }
