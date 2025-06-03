@@ -2,11 +2,13 @@
 import {useRouter} from "vue-router";
 
 import {ref} from "vue";
-import {APIClient} from "@/utils/APIClient.ts";
+import {APIClient} from "@/utilities/APIClient.ts";
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 import {useRefreshTokenStore} from "@/stores/RefreshTokenStore.ts";
-import {handleError} from "@/utils/ErrorHandler.ts";
+import {handleAxiosError} from "@/utilities/AxiosErrorHandler.ts";
+import {useToast} from "primevue";
 
+const toast = useToast()
 const router = useRouter()
 const accessTokenStore = useAccessTokenStore()
 const refreshTokenStore = useRefreshTokenStore()
@@ -25,7 +27,7 @@ async function authenticate() {
     refreshTokenStore.setPrincipal(data.refresh_token)
     await router.push('/home')
   } catch (e) {
-    handleError(e)
+    handleAxiosError(toast, e)
   }
 }
 </script>
@@ -76,6 +78,7 @@ async function authenticate() {
       </form>
     </div>
   </div>
+  <Toast />
 </template>
 
 <style scoped>
