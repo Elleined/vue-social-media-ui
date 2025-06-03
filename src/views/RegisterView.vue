@@ -3,8 +3,10 @@
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 import {APIClient} from "@/utilities/APIClient.ts";
+import {useToast} from "primevue";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 
+const toast = useToast()
 const router = useRouter()
 
 const firstName = ref<string>()
@@ -91,6 +93,7 @@ async function goToLogin() {
       </form>
     </div>
   </main>
+  <Toast/>
 </template>
 
 <style scoped>
