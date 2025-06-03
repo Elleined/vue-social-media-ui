@@ -6,7 +6,7 @@ import microsoft from "@/assets/microsoft.png";
 import facebook from "@/assets/facebook.png";
 
 import {ref} from "vue";
-import {APIClient} from "@/utilities/APIClient.ts";
+import {APIClient, BASE_URL} from "@/utilities/APIClient.ts";
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 import {useRefreshTokenStore} from "@/stores/RefreshTokenStore.ts";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
@@ -34,6 +34,11 @@ async function authenticate() {
     handleError(toast, e)
   }
 }
+
+async function goToRegister() {
+  await router.push('/register')
+}
+
 </script>
 
 <template>
@@ -47,7 +52,7 @@ async function authenticate() {
           </h3>
           <p>
             Don't have an account?
-            <a href="javascript:void(0)" class="font-medium text-indigo-600 hover:text-indigo-500">Sign up</a>
+            <button @click="goToRegister()" type="button" class="font-medium text-indigo-600 cursor-pointer hover:text-indigo-500">Sign up</button>
           </p>
         </div>
       </div>
@@ -71,8 +76,8 @@ async function authenticate() {
           />
         </div>
         <button
-            class="w-full mt-4 px-4 py-2 text-white font-medium bg-indigo-600 cursor-pointer hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">
-          Sign in
+            type="button" class="w-full mt-4 px-4 py-2 text-white font-medium bg-indigo-600  cursor-pointer hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">
+          Log in
         </button>
       </form>
       <div class="relative">
@@ -82,31 +87,33 @@ async function authenticate() {
         </p>
       </div>
       <div class="space-y-4 text-sm font-medium">
-        <button class="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg cursor-pointer hover:bg-gray-50 duration-150 active:bg-gray-100">
+        <a :href="`${BASE_URL}/auth/google`" class="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg cursor-pointer hover:bg-gray-50 duration-150 active:bg-gray-100">
           <img
               :src="google"
               alt="Google"
               class="w-5 h-5"
           />
           Continue with Google
-        </button>
+        </a>
 
-        <button class="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg cursor-pointer hover:bg-gray-50 duration-150 active:bg-gray-100">
+        <a :href="`${BASE_URL}/auth/microsoft`" class="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg cursor-pointer hover:bg-gray-50 duration-150 active:bg-gray-100">
           <img
               :src="microsoft"
               alt="Google"
               class="w-5 h-5"
           />
           Continue with Microsoft
-        </button>
-        <button class="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg cursor-pointer hover:bg-gray-50 duration-150 active:bg-gray-100">
+        </a>
+
+        <a :href="`${BASE_URL}/auth/facebook`" class="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg cursor-pointer hover:bg-gray-50 duration-150 active:bg-gray-100">
           <img
               :src="facebook"
               alt="Facebook"
               class="w-6 h-6"
           />
           Continue with Facebook
-        </button>
+        </a>
+
       </div>
       <div class="text-center">
         <a href="javascript:void(0)" class="text-indigo-600 hover:text-indigo-500">Forgot password?</a>

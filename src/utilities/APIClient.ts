@@ -1,7 +1,7 @@
 import axios, {type AxiosInstance} from "axios";
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 
-const BASE_URL: string = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`
+export const BASE_URL: string = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`
 
 export function APIClient(): AxiosInstance {
     return axios.create({
