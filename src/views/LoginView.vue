@@ -5,6 +5,7 @@ import {ref} from "vue";
 import {APIClient} from "@/utils/APIClient.ts";
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 import {useRefreshTokenStore} from "@/stores/RefreshTokenStore.ts";
+import {handleError} from "@/utils/ErrorHandler.ts";
 
 const router = useRouter()
 const accessTokenStore = useAccessTokenStore()
@@ -14,16 +15,19 @@ const username = ref<string>()
 const password = ref<string>()
 
 async function authenticate() {
-  const { data } = await APIClient().post('/users/login', {
-    username: username.value,
-    password: password.value
-  })
+  try {
+    const { data } = await APIClient().post('/users/login', {
+      username: username.value,
+      password: password.value
+    })
 
-  accessTokenStore.setPrincipal(data.accessToken)
-  refreshTokenStore.setPrincipal(data.refreshToken)
-  await router.push('/home')
+    accessTokenStore.setPrincipal(data.access_token)
+    refreshTokenStore.setPrincipal(data.refresh_token)
+    await router.push('/home')
+  } catch (e) {
+    handleError(e)
+  }
 }
-
 </script>
 
 <template>
