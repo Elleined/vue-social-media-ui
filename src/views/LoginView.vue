@@ -72,11 +72,12 @@ async function goToRegister() {
               type="password"
               v-model="password"
               required
+              autocomplete="off"
               class="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
           />
         </div>
         <button
-            type="button" class="w-full mt-4 px-4 py-2 text-white font-medium bg-indigo-600  cursor-pointer hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">
+            type="submit" class="w-full mt-4 px-4 py-2 text-white font-medium bg-indigo-600  cursor-pointer hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">
           Log in
         </button>
       </form>
