@@ -1,15 +1,10 @@
 <script setup lang="ts">
 
-import google from "@/assets/google.png";
-import microsoft from "@/assets/microsoft.png";
-import facebook from "@/assets/facebook.png";
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 import {APIClient} from "@/utilities/APIClient.ts";
-import {useToast} from "primevue";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 
-const toast = useToast()
 const router = useRouter()
 
 const firstName = ref<string>()
@@ -26,7 +21,6 @@ async function register() {
       password: password.value
     })
 
-    toast.add({ severity: 'success', summary: 'Success Message', detail: 'Registration successful', life: 1500 });
     await router.push('/login')
   } catch (e) {
     handleError(toast, e)
@@ -97,7 +91,6 @@ async function goToLogin() {
       </form>
     </div>
   </main>
-  <Toast/>
 </template>
 
 <style scoped>
