@@ -1,16 +1,15 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import type User from "@/model/User.ts";
 
-export const useJWTStore = defineStore('jwt', () => {
+export const useRefreshTokenStore = defineStore('refreshToken', () => {
     const principal = ref<string>()
 
     function getPrincipal(): string {
         return principal.value!
     }
 
-    function setPrincipal(jwt: string) {
-        principal.value = jwt
+    function setPrincipal(refreshToken: string) {
+        principal.value = refreshToken
     }
 
     return { principal, getPrincipal, setPrincipal }

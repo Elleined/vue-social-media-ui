@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import LoginView from "@/views/LoginView.vue";
 import HomeView from "@/views/HomeView.vue";
-import {routeGuard} from "@/utils/routeGuard.ts";
+import {routeGuard} from "@/utils/RouteGuard.ts";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

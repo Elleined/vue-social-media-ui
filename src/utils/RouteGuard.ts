@@ -1,13 +1,13 @@
 import type {NavigationGuardNext, RouteLocationNormalized} from "vue-router";
-import {useJWTStore} from "@/stores/jwtStore.ts";
+import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 
 export function routeGuard(to: RouteLocationNormalized,
                           from: RouteLocationNormalized,
                           next: NavigationGuardNext) {
 
-    const jwtStore = useJWTStore()
+    const accessToken = useAccessTokenStore().getPrincipal()
 
-    if (!jwtStore.getPrincipal()) {
+    if (!accessToken) {
         return next('/login') // Redirect to login if not authenticated
     }
 
