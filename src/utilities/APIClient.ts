@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios, {type AxiosInstance} from "axios";
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 
-const BASE_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`
+const BASE_URL: string = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`
 
-function APIClient() {
+export function APIClient(): AxiosInstance {
     return axios.create({
         baseURL: BASE_URL,
         headers: {
@@ -12,7 +12,7 @@ function APIClient() {
     })
 }
 
-function APIClientWithCredentials() {
+export function APIClientWithCredentials(): AxiosInstance {
     const accessToken = useAccessTokenStore().getPrincipal()
 
     return axios.create({
@@ -23,9 +23,4 @@ function APIClientWithCredentials() {
         },
         withCredentials: true
     })
-}
-
-export {
-    APIClient,
-    APIClientWithCredentials
 }
