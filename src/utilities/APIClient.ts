@@ -31,21 +31,19 @@ export function APIClientWithCredentials(): AxiosInstance {
     })
 
     client.interceptors.response.use(response => response, async error => {
-        try {
-            if (error.response?.status !== 401) {
-                return
+        if (error.response?.status === 401) {
+            try {
+                const {data} = await APIClient().post('/users/refresh-tokens', {
+                    refresh_token: refreshTokenStore.getPrincipal()
+                })
+
+                accessTokenStore.setPrincipal(data.access_token)
+                refreshTokenStore.setPrincipal(data.refresh_token)
+            } catch (e) {
+                accessTokenStore.setPrincipal("")
+                refreshTokenStore.setPrincipal("")
+                await router.push('/login')
             }
-
-            const {data} = await APIClient().post('/users/refresh-tokens', {
-                refresh_token: refreshTokenStore.getPrincipal()
-            })
-
-            accessTokenStore.setPrincipal(data.access_token)
-            refreshTokenStore.setPrincipal(data.refresh_token)
-        } catch (e) {
-            accessTokenStore.setPrincipal("")
-            refreshTokenStore.setPrincipal("")
-            await router.push('/login')
         }
     })
 
