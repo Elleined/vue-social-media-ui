@@ -5,7 +5,11 @@ import microsoft from "@/assets/microsoft.png";
 import facebook from "@/assets/facebook.png";
 import {ref} from "vue";
 import {useRouter} from "vue-router";
+import {APIClient} from "@/utilities/APIClient.ts";
+import {useToast} from "primevue";
+import handleError from "@/utilities/AxiosErrorHandler.ts";
 
+const toast = useToast()
 const router = useRouter()
 
 const firstName = ref<string>()
@@ -13,8 +17,20 @@ const lastName = ref<string>()
 const username = ref<string>()
 const password = ref<string>()
 
-async function authenticate() {
+async function register() {
+  try {
+    const { data } = await APIClient().post('/users', {
+      first_name: firstName.value,
+      last_name: lastName.value,
+      email: username.value,
+      password: password.value
+    })
 
+    toast.add({ severity: 'success', summary: 'Success Message', detail: 'Registration successful', life: 1500 });
+    await router.push('/login')
+  } catch (e) {
+    handleError(toast, e)
+  }
 }
 
 async function goToLogin() {
@@ -37,7 +53,7 @@ async function goToLogin() {
           </p>
         </div>
       </div>
-      <form @submit.prevent="authenticate()">
+      <form @submit.prevent="register()">
         <div>
           <label class="font-medium"> First name </label>
           <input
@@ -81,6 +97,7 @@ async function goToLogin() {
       </form>
     </div>
   </main>
+  <Toast/>
 </template>
 
 <style scoped>
