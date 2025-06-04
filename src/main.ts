@@ -25,6 +25,7 @@ import {
     Textarea,
     Toast
 } from "primevue";
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 const app = createApp(App)
 
@@ -34,7 +35,9 @@ app.use(PrimeVue, {
     }
 });
 
-app.use(createPinia())
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+
 app.use(router)
 app.use(ToastService)
 

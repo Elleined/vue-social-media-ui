@@ -5,9 +5,6 @@ import {useRouter} from "vue-router";
 
 export const BASE_URL: string = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`
 
-const router = useRouter()
-const accessTokenStore = useAccessTokenStore()
-const refreshTokenStore = useRefreshTokenStore()
 
 export function APIClient(): AxiosInstance {
     return axios.create({
@@ -19,6 +16,10 @@ export function APIClient(): AxiosInstance {
 }
 
 export function APIClientWithCredentials(): AxiosInstance {
+    const router = useRouter()
+    const accessTokenStore = useAccessTokenStore()
+    const refreshTokenStore = useRefreshTokenStore()
+
     const accessToken = accessTokenStore.getPrincipal()
 
     const client = axios.create({

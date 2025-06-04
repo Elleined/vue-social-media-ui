@@ -13,4 +13,6 @@ export const useRefreshTokenStore = defineStore('refreshToken', () => {
     }
 
     return { principal, getPrincipal, setPrincipal }
+}, {
+    persist: true
 })

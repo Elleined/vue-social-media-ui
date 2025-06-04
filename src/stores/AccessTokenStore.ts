@@ -13,4 +13,6 @@ export const useAccessTokenStore = defineStore('accessToken', () => {
     }
 
     return { principal, getPrincipal, setPrincipal }
+}, {
+    persist: true
 })
