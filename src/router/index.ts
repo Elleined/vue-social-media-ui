@@ -19,14 +19,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: LoginView,
-      beforeEnter: (to, from, next) => {
-        if (useAccessTokenStore().getPrincipal()) {
-          return next('/home')
-        }
-
-        next()
-      }
+      component: LoginView
     },
     {
       path: '/register',
@@ -36,14 +29,7 @@ const router = createRouter({
     {
       path: '/home',
       name: 'home',
-      component: HomeView,
-      beforeEnter: (to, from, next) => {
-        if (!useAccessTokenStore().getPrincipal()) {
-          return next('/login')
-        } // Redirect to login if not authenticated
-
-        next()
-      }
+      component: HomeView
     },
   ],
 })

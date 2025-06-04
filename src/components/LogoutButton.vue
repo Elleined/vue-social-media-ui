@@ -4,6 +4,7 @@ import {useRouter} from "vue-router";
 import axios from "axios";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {useToast} from "primevue";
+import {APIClient} from "@/utilities/APIClient.ts";
 
 const toast = useToast()
 const router = useRouter()
@@ -11,7 +12,7 @@ const accessTokenStore = useAccessTokenStore()
 
 async function logout() {
   try {
-    await axios.post("/users/logout")
+    await APIClient().post("/users/logout")
     accessTokenStore.setPrincipal("")
     await router.push('/login')
   } catch (e) {
