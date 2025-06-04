@@ -38,6 +38,7 @@ app.use(PrimeVue, {
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
+app.use(pinia)
 app.use(router)
 app.use(ToastService)
 
