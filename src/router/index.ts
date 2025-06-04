@@ -1,8 +1,9 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import {createRouter, createWebHistory, type NavigationGuardNext, type RouteLocationNormalized} from 'vue-router'
 import LoginView from "@/views/LoginView.vue";
 import HomeView from "@/views/HomeView.vue";
 import {routeGuard} from "@/utilities/RouteGuard.ts";
 import RegisterView from "@/views/RegisterView.vue";
+import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +20,13 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView,
+      beforeEnter: (to, from, next) => {
+        if (useAccessTokenStore().getPrincipal()) {
+          return next('/home')
+        }
+
+        next()
+      }
     },
     {
       path: '/register',
@@ -29,7 +37,13 @@ const router = createRouter({
       path: '/home',
       name: 'home',
       component: HomeView,
-      beforeEnter: routeGuard,
+      beforeEnter: (to, from, next) => {
+        if (!useAccessTokenStore().getPrincipal()) {
+          return next('/login')
+        } // Redirect to login if not authenticated
+
+        next()
+      }
     },
   ],
 })

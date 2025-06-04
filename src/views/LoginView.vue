@@ -8,27 +8,25 @@ import facebook from "@/assets/facebook.png";
 import {ref} from "vue";
 import {APIClient, BASE_URL} from "@/utilities/APIClient.ts";
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
-import {useRefreshTokenStore} from "@/stores/RefreshTokenStore.ts";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {useToast} from "primevue";
 
 const toast = useToast()
 const router = useRouter()
 const accessTokenStore = useAccessTokenStore()
-const refreshTokenStore = useRefreshTokenStore()
 
 const username = ref<string>()
 const password = ref<string>()
 
 async function authenticate() {
   try {
-    const {data} = await APIClient().post('/users/login', {
+    const response = await APIClient().post('/users/login', {
       username: username.value,
       password: password.value
     })
+    const jwt = response.data
 
-    accessTokenStore.setPrincipal(data.access_token)
-    refreshTokenStore.setPrincipal(data.refresh_token)
+    accessTokenStore.setPrincipal(jwt)
     await router.push('/home')
   } catch (e) {
     handleError(toast, e)

@@ -1,6 +1,5 @@
 import axios, {type AxiosInstance} from "axios";
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
-import {useRefreshTokenStore} from "@/stores/RefreshTokenStore.ts";
 import {useRouter} from "vue-router";
 
 export const BASE_URL: string = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`
@@ -18,15 +17,12 @@ export function APIClient(): AxiosInstance {
 export function APIClientWithCredentials(): AxiosInstance {
     const router = useRouter()
     const accessTokenStore = useAccessTokenStore()
-    const refreshTokenStore = useRefreshTokenStore()
-
-    const accessToken = accessTokenStore.getPrincipal()
 
     const client = axios.create({
         baseURL: BASE_URL,
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
+            'Authorization': `Bearer ${accessTokenStore.getPrincipal()}`
         },
         withCredentials: true
     })
@@ -34,15 +30,14 @@ export function APIClientWithCredentials(): AxiosInstance {
     client.interceptors.response.use(response => response, async error => {
         if (error.response?.status === 401) {
             try {
-                const {data} = await APIClient().post('/users/refresh-tokens', {
-                    refresh_token: refreshTokenStore.getPrincipal()
-                })
+                const response = await APIClient().post('/users/refresh-tokens')
+                const jwt = response.data
 
-                accessTokenStore.setPrincipal(data.access_token)
-                refreshTokenStore.setPrincipal(data.refresh_token)
+                accessTokenStore.setPrincipal(jwt)
+                console.log("INTERCEPROT SUCCESS IN JWT")
             } catch (e) {
                 accessTokenStore.setPrincipal("")
-                refreshTokenStore.setPrincipal("")
+                console.log("INTERCEPROT ERROR IN JWT")
                 await router.push('/login')
             }
         }
