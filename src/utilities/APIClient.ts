@@ -10,7 +10,8 @@ export function APIClient(): AxiosInstance {
         baseURL: BASE_URL,
         headers: {
             'Content-Type': 'application/json'
-        }
+        },
+        withCredentials: true,
     })
 }
 
