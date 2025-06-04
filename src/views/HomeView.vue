@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import {onMounted} from "vue";
+import LogoutButton from "@/components/LogoutButton.vue";
+
 
 onMounted(() => {
   const hash = window.location.hash.substring(1); // Remove '#'
@@ -7,11 +9,18 @@ onMounted(() => {
   const accessToken = params.get('access_token');
   console.log(accessToken);
 })
+
+
+
 </script>
 
 <template>
-adasasdas
+HOME
+
+
+  <LogoutButton />
   <Toast />
+
 </template>
 
 <style scoped>
