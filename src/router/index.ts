@@ -36,14 +36,7 @@ const router = createRouter({
     {
       path: '/home',
       name: 'home',
-      component: HomeView,
-      beforeEnter: (to, from, next) => {
-        if (!useAccessTokenStore().getPrincipal()) {
-          return next('/login')
-        } // Redirect to login if not authenticated
-
-        next()
-      }
+      component: HomeView
     },
   ],
 })
