@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 import {useRouter} from "vue-router";
-import axios from "axios";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {useToast} from "primevue";
 import {APIClient} from "@/utilities/APIClient.ts";
