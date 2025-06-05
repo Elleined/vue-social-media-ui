@@ -35,10 +35,8 @@ export function APIClientWithCredentials(): AxiosInstance {
                 const jwt = response.data
 
                 accessTokenStore.setPrincipal(jwt)
-                console.log("INTERCEPROT SUCCESS IN JWT")
             } catch (e) {
                 accessTokenStore.setPrincipal("")
-                console.log("INTERCEPROT ERROR IN JWT")
                 await router.push('/login')
             }
         }
