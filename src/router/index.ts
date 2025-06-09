@@ -1,7 +1,6 @@
-import {createRouter, createWebHistory, type NavigationGuardNext, type RouteLocationNormalized} from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import LoginView from "@/views/LoginView.vue";
 import HomeView from "@/views/HomeView.vue";
-import {routeGuard} from "@/utilities/RouteGuard.ts";
 import RegisterView from "@/views/RegisterView.vue";
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 

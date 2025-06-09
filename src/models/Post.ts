@@ -1,8 +1,8 @@
 export default interface Post {
     id: number
-    createdAt: Date
+    created_at: Date
     subject: string
     content: string
     attachment: string
-    authorId: number
+    author_id: number
 }

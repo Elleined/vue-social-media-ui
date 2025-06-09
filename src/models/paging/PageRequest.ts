@@ -1,6 +1,6 @@
 export default interface PageRequest {
-    pageNumber: number
-    pageSize: number
+    page_number: number
+    page_size: number
     field: string
-    sortBy: string
+    sort_by: string
 }

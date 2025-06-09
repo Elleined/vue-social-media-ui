@@ -16,12 +16,16 @@ import {
     ColorPicker,
     DatePicker,
     Dialog,
+    FloatLabel,
     IftaLabel,
+    Image,
     InputGroup,
     InputGroupAddon,
     InputText,
+    Menu,
     Message,
     Password,
+    Popover,
     Textarea,
     Toast
 } from "primevue";
@@ -54,9 +58,12 @@ app.component("InputText", InputText)
 app.component("DatePicker", DatePicker)
 app.component("ColorPicker", ColorPicker)
 app.component("IftaLabel", IftaLabel)
-app.component("InpuText", InputText)
+app.component("FloatLabel", FloatLabel)
 app.component("TextArea", Textarea)
 app.component("Toast", Toast)
 app.component("Password", Password)
+app.component("Popover", Popover)
+app.component("Menu", Menu)
+app.component("Image", Image)
 
 app.mount('#app')

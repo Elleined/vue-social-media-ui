@@ -5,24 +5,19 @@ import {useRouter} from "vue-router";
 import {APIClient} from "@/utilities/APIClient.ts";
 import {useToast} from "primevue";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
+import {userService} from "@/services/UserService.ts";
 
 const toast = useToast()
 const router = useRouter()
 
-const firstName = ref<string>()
-const lastName = ref<string>()
-const username = ref<string>()
-const password = ref<string>()
+const firstName = ref<string>('')
+const lastName = ref<string>('')
+const username = ref<string>('')
+const password = ref<string>('')
 
 async function register() {
   try {
-    const { data } = await APIClient().post('/users', {
-      first_name: firstName.value,
-      last_name: lastName.value,
-      email: username.value,
-      password: password.value
-    })
-
+    await userService.save(firstName.value, lastName.value, username.value, password.value)
     await router.push('/login')
   } catch (e) {
     handleError(toast, e)
@@ -45,7 +40,9 @@ async function goToLogin() {
           </h3>
           <p>
             Already have an account?
-            <button @click="goToLogin()" type="button" class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">Log in</button>
+            <button @click="goToLogin()" type="button"
+                    class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">Log in
+            </button>
           </p>
         </div>
       </div>

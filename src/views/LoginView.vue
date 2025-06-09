@@ -10,22 +10,18 @@ import {APIClient, BASE_URL} from "@/utilities/APIClient.ts";
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {useToast} from "primevue";
+import {userService} from "@/services/UserService.ts";
 
 const toast = useToast()
 const router = useRouter()
 const accessTokenStore = useAccessTokenStore()
 
-const username = ref<string>()
-const password = ref<string>()
+const username = ref<string>('')
+const password = ref<string>('')
 
 async function authenticate() {
   try {
-    const response = await APIClient().post('/users/login', {
-      username: username.value,
-      password: password.value
-    })
-    const jwt = response.data
-
+    const jwt = await userService.login(username.value, password.value)
     accessTokenStore.setPrincipal(jwt)
     await router.push('/home')
   } catch (e) {

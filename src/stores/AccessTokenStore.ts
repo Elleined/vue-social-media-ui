@@ -2,10 +2,10 @@ import {defineStore} from "pinia";
 import {ref} from "vue";
 
 export const useAccessTokenStore = defineStore('accessToken', () => {
-    const principal = ref<string>()
+    const principal = ref<string>('')
 
     function getPrincipal(): string {
-        return principal.value!
+        return principal.value
     }
 
     function setPrincipal(accessToken: string) {
