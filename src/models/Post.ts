@@ -1,8 +1,9 @@
+import type {Nullable} from "@/models/Nullable.ts";
+
 export default interface Post {
     id: number
     created_at: Date
-    subject: string
     content: string
-    attachment: string
+    attachment: Nullable
     author_id: number
 }

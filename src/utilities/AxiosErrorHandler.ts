@@ -4,7 +4,8 @@ import {type ToastServiceMethods} from "primevue";
 
 export default function handleError(toast: ToastServiceMethods, error: any) {
     if (!axios.isAxiosError(error)) {
-        handleLocalError(toast, error)
+        console.error(error);
+        toast.add({ severity: 'error', summary: 'Error Message', detail: `${error.message}`, life: 1500 });
         return
     }
 
@@ -20,9 +21,4 @@ function handleAxiosError(toast: ToastServiceMethods, error: any) {
             toast.add({ severity: 'error', summary: 'Error Message', detail: `${errorMessage.message}`, life: 1500 });
         }
     }
-}
-
-function handleLocalError(toast: ToastServiceMethods, error: any) {
-    console.log("Local error")
-    console.log(error)
 }

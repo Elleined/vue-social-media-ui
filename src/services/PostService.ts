@@ -3,16 +3,13 @@ import type Post from "@/models/Post.ts";
 import {APIClientWithCredentials} from "@/utilities/APIClient.ts";
 
 export const postService = {
-    async save(subject: string, content: string): Promise<Post> {
-        if (!subject)
-            throw new Error("please provide subject");
-
+    async save(content: string, attachment: string | undefined): Promise<number> {
         if (!content)
             throw new Error("please provide content");
 
         const response = await APIClientWithCredentials().post("/users/posts", {
-            subject: subject,
-            content: content
+            content: content,
+            attachment: attachment
         })
 
         return response.data
@@ -84,24 +81,8 @@ export const postService = {
         return response.data
     },
 
-    async updateSubject(postId: number, subject: string): Promise<string> {
-        if (postId || postId < 0)
-            throw new Error("please provide post")
-
-        if (!subject)
-            throw new Error("please provide subject")
-
-        const response = await APIClientWithCredentials().patch(`/users/posts/${postId}/subject}`, null, {
-            params: {
-                subject: subject,
-            }
-        })
-
-        return response.data
-    },
-
     async updateContent(postId: number, content: string): Promise<string> {
-        if (postId || postId < 0)
+        if (!postId || postId < 0)
             throw new Error("please provide post")
 
         if (!content)
@@ -117,7 +98,7 @@ export const postService = {
     },
 
     async updateAttachment(postId: number, attachment: string): Promise<string> {
-        if (postId || postId < 0)
+        if (!postId || postId < 0)
             throw new Error("please provide post")
 
         if (!attachment)
@@ -133,10 +114,18 @@ export const postService = {
     },
 
     async delete(postId: number): Promise<void> {
-        if (postId || postId < 0)
+        if (!postId || postId < 0)
             throw new Error("please provide post")
 
         const response = await APIClientWithCredentials().delete(`/users/posts/${postId}`)
+        return response.data
+    },
+
+    async getById(postId: number): Promise<Post> {
+        if (!postId || postId < 0)
+            throw new Error("please provide post")
+
+        const response = await APIClientWithCredentials().get(`/users/posts/${postId}`)
         return response.data
     }
 }

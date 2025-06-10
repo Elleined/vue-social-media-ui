@@ -15,7 +15,7 @@ import {
     Card,
     ColorPicker,
     DatePicker,
-    Dialog,
+    Dialog, FileUpload,
     FloatLabel,
     IftaLabel,
     Image,
@@ -65,5 +65,6 @@ app.component("Password", Password)
 app.component("Popover", Popover)
 app.component("Menu", Menu)
 app.component("Image", Image)
+app.component("FileUpload", FileUpload)
 
 app.mount('#app')

@@ -10,7 +10,7 @@ defineProps<{
 </script>
 
 <template>
-  <div v-for="post in paginatedPosts?.content" :key="post.id" class="w-full shadow-md p-2 border-2">
+  <div v-for="post in paginatedPosts?.content" :key="post.id" class="w-full shadow-md p-3">
       <PostItem :post="post"/>
   </div>
 </template>
