@@ -18,6 +18,7 @@ const props = defineProps<{
 const post = toRef(props, "post")
 const author = ref<User>({} as User)
 const attachment = ref()
+const commentDialogVisible = ref<boolean>(false)
 
 const formattedDate = computed(() => formatDate(post.value.created_at));
 
@@ -29,6 +30,10 @@ const showImage = async () => {
   const response = await fileService.read("post", post.value.attachment.String)
   const blob = new Blob([response]);
   attachment.value = URL.createObjectURL(blob);
+}
+
+const commentClicked = () => {
+  commentDialogVisible.value = true
 }
 
 onMounted(async () => {
@@ -46,8 +51,8 @@ onMounted(async () => {
     <header class="flex items-start gap-3">
       <Avatar image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" shape="circle" size="large" class="mt-1"/>
       <div>
-        <p>{{ author.first_name }} {{ author.last_name }}</p>
-        <p>{{ formattedDate }}</p>
+        <p class="font-bold">{{ author.first_name }} {{ author.last_name }}</p>
+        <p class="font-light">{{ formattedDate }}</p>
       </div>
     </header>
 
@@ -60,10 +65,14 @@ onMounted(async () => {
 
     <footer class="flex justify-between items-center">
       <Button type="button" label="Like" icon="pi pi-thumbs-up" badge="2" badgeSeverity="secondary" variant="outlined" />
-      <Button type="button" label="Comments" icon="pi pi-comments" badge="2" badgeSeverity="secondary" variant="outlined" />
+      <Button type="button" label="Comments" icon="pi pi-comments" badge="2" badgeSeverity="secondary" variant="outlined" @click="commentClicked" />
     </footer>
   </div>
   <Toast/>
+
+  <Dialog v-model:visible="commentDialogVisible" modal :header="author.first_name + '\'s Post'" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+    <PostItem :post="post" />
+  </Dialog>
 </template>
 
 <style scoped>
