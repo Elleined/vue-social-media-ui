@@ -4,6 +4,20 @@ import {useRouter} from "vue-router";
 
 export const BASE_URL: string = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`
 
+let isRefreshing = false;
+let failedQueue: { resolve: (value: any) => void; reject: (reason?: any) => void }[] = [];
+
+function processQueue(error: any, token: string | null = null) {
+    failedQueue.forEach(prom => {
+        if (error) {
+            prom.reject(error);
+        } else {
+            prom.resolve(token);
+        }
+    });
+    failedQueue = [];
+}
+
 export function APIClient(): AxiosInstance {
     return axios.create({
         baseURL: BASE_URL,
@@ -14,32 +28,78 @@ export function APIClient(): AxiosInstance {
     })
 }
 
+
 export function APIClientWithCredentials(): AxiosInstance {
     const router = useRouter();
-    const accessTokenStore = useAccessTokenStore()
+    const accessTokenStore = useAccessTokenStore();
 
-    const client: AxiosInstance =  axios.create({
+    const client: AxiosInstance = axios.create({
         baseURL: BASE_URL,
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessTokenStore.getPrincipal()}`
         },
         withCredentials: true
-    })
+    });
+
+    client.interceptors.request.use(
+        (config) => {
+            const token = accessTokenStore.getPrincipal();
+            if (token) {
+                config.headers['Authorization'] = `Bearer ${token}`;
+            }
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
+        }
+    );
+
 
     client.interceptors.response.use(response => response, async error => {
-        if (error.response?.status === 401) {
-            try {
-                const response = await APIClient().post('/users/refresh-tokens')
-                const jwt = response.data
+            const originalRequest = error.config;
 
-                accessTokenStore.setPrincipal(jwt)
-            } catch (e) {
-                accessTokenStore.setPrincipal("")
-                await router.push('/login')
+            if (error.response?.status === 401 && !originalRequest._retry) {
+                if (isRefreshing) {
+                    return new Promise((resolve, reject) => {
+                        failedQueue.push({ resolve, reject });
+                    })
+                        .then(token => {
+                            originalRequest.headers['Authorization'] = `Bearer ${token}`;
+                            return client(originalRequest);
+                        })
+                        .catch(err => {
+                            return Promise.reject(err);
+                        });
+                }
+
+                originalRequest._retry = true;
+                isRefreshing = true;
+
+                try {
+                    const response = await APIClient().post('/users/refresh-tokens');
+                    const accessToken = response.data;
+
+                    accessTokenStore.setPrincipal(accessToken);
+                    client.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`; // Update default header for future requests
+                    originalRequest.headers['Authorization'] = `Bearer ${accessToken}`; // Update the original request's header
+
+                    processQueue(null, accessToken);
+                    return client(originalRequest); // Retry the original request
+                } catch (e: any) {
+                    accessTokenStore.setPrincipal("");
+                    processQueue(e);
+                    await router.push('/login');
+                    return Promise.reject(error); // Reject the promise so the calling function knows it failed
+                } finally {
+                    isRefreshing = false;
+                }
             }
-        }
-    })
 
-    return client
+            return Promise.reject(error);
+        }
+    );
+
+    return client;
 }
+
