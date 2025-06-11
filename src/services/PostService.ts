@@ -113,7 +113,7 @@ export const postService = {
         return response.data
     },
 
-    async delete(postId: number): Promise<void> {
+    async deleteById(postId: number): Promise<void> {
         if (!postId || postId < 0)
             throw new Error("please provide post")
 

@@ -88,25 +88,6 @@ export const userService = {
         return await this.getAll(1, 10, "created_at", "desc", true)
     },
 
-    async login(
-        username: string,
-        password: string,
-    ): Promise<string> {
-
-        if (!username)
-            throw new Error("please provide username")
-
-        if (!password)
-            throw new Error("please provide password")
-
-        const response = await APIClient().post('/users/login', {
-            username: username,
-            password: password
-        })
-
-        return response.data
-    },
-
     async updateStatus(userId: number, status: boolean): Promise<boolean> {
         if (!userId || userId < 0)
             throw new Error("please provide user")
@@ -139,6 +120,30 @@ export const userService = {
             throw new Error("please provide user")
 
         const response = await APIClient().delete(`/users/${userId}`)
+        return response.data
+    },
+
+    async login(
+        username: string,
+        password: string,
+    ): Promise<string> {
+
+        if (!username)
+            throw new Error("please provide username")
+
+        if (!password)
+            throw new Error("please provide password")
+
+        const response = await APIClient().post('/users/login', {
+            username: username,
+            password: password
+        })
+
+        return response.data
+    },
+
+    async logout(): Promise<void> {
+        const response = await APIClient().post("/users/logout")
         return response.data
     }
 }
