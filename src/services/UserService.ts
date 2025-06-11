@@ -1,4 +1,4 @@
-import {APIClient} from "@/utilities/APIClient.ts";
+import {APIClient, APIClientWithCredentials} from "@/utilities/APIClient.ts";
 import type Page from "@/models/paging/Page.ts";
 import type User from "@/models/User.ts";
 
@@ -29,6 +29,11 @@ export const userService = {
             password: password,
         })
 
+        return response.data
+    },
+
+    async getByJWT(): Promise<User> {
+        const response = await APIClientWithCredentials().get(`/users/jwt`)
         return response.data
     },
 

@@ -72,6 +72,20 @@ onMounted(async () => {
 
   <Dialog v-model:visible="commentDialogVisible" modal :header="author.first_name + '\'s Post'" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <PostItem :post="post" />
+    <header class="max-w-3xl mx-auto bg-white rounded-2xl p-4 space-y-4 mb-5 mt-4">
+      <form class="flex justify-center items-center gap-4" @submit.prevent="save()">
+        <Avatar image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" shape="circle" size="large"/>
+        <FloatLabel>
+          <InputText id="content" v-model="content" required/>
+          <label for="content">Comment as </label>
+        </FloatLabel>
+        <FileUpload mode="basic" @select="previewImage" customUpload auto severity="secondary" class="p-button-outlined" />
+        <Button type="submit" label="Post" severity="info" rounded icon="pi pi-send"/>
+      </form>
+      <div class="card flex flex-wrap justify-center gap-4">
+        <Image v-if="preview" :src="preview" alt="Image" width="250" preview/>
+      </div>
+    </header>
   </Dialog>
 </template>
 
