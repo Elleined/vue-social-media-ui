@@ -1,6 +1,7 @@
 import axios, {type AxiosInstance} from "axios";
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 import {useRouter} from "vue-router";
+import {refreshService} from "@/services/RefreshService.ts";
 
 export const BASE_URL: string = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`
 
@@ -77,8 +78,7 @@ export function APIClientWithCredentials(): AxiosInstance {
                 isRefreshing = true;
 
                 try {
-                    const response = await APIClient().post('/users/refresh-tokens');
-                    const accessToken = response.data;
+                    const accessToken = await refreshService.refreshToken()
 
                     accessTokenStore.setPrincipal(accessToken);
                     client.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`; // Update default header for future requests
