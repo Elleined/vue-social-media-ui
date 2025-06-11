@@ -6,7 +6,7 @@ import microsoft from "@/assets/microsoft.png";
 import facebook from "@/assets/facebook.png";
 
 import {ref} from "vue";
-import {APIClient, BASE_URL} from "@/utilities/APIClient.ts";
+import {BASE_URL} from "@/utilities/APIClient.ts";
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {useToast} from "primevue";

@@ -15,10 +15,41 @@ const props = defineProps<{
   post: Post;
 }>()
 
+// Comment related
+const commentDialogVisible = ref<boolean>(false)
+const commentContent = ref<string>('')
+const commentAttachment = ref()
+const commentPreview = ref()
+
+const saveComment = () => {
+
+}
+
+const previewImage = (event: any) => {
+  commentAttachment.value = event.files[0]
+  const reader = new FileReader()
+
+  reader.onload = () => {
+    if (reader.result) {
+      commentPreview.value = reader.result
+    }
+  }
+
+  reader.readAsDataURL(commentAttachment.value)
+}
+
+
+const clearFields = () => {
+  commentContent.value = ''
+  commentAttachment.value = null
+  commentPreview.value = null
+}
+
+
+// Post related
 const post = toRef(props, "post")
 const author = ref<User>({} as User)
 const attachment = ref()
-const commentDialogVisible = ref<boolean>(false)
 
 const formattedDate = computed(() => formatDate(post.value.created_at));
 
@@ -73,17 +104,17 @@ onMounted(async () => {
   <Dialog v-model:visible="commentDialogVisible" modal :header="author.first_name + '\'s Post'" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <PostItem :post="post" />
     <header class="max-w-3xl mx-auto bg-white rounded-2xl p-4 space-y-4 mb-5 mt-4">
-      <form class="flex justify-center items-center gap-4" @submit.prevent="save()">
+      <form class="flex justify-center items-center gap-4" @submit.prevent="saveComment()">
         <Avatar image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" shape="circle" size="large"/>
         <FloatLabel>
-          <InputText id="content" v-model="content" required/>
+          <InputText id="content" v-model="commentContent" required/>
           <label for="content">Comment as </label>
         </FloatLabel>
         <FileUpload mode="basic" @select="previewImage" customUpload auto severity="secondary" class="p-button-outlined" />
-        <Button type="submit" label="Post" severity="info" rounded icon="pi pi-send"/>
+        <Button type="submit" variant="outlined" severity="success" rounded icon="pi pi-send"/>
       </form>
       <div class="card flex flex-wrap justify-center gap-4">
-        <Image v-if="preview" :src="preview" alt="Image" width="250" preview/>
+        <Image v-if="commentPreview" :src="commentPreview" alt="Image" width="250" preview/>
       </div>
     </header>
   </Dialog>

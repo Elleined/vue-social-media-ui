@@ -93,7 +93,7 @@ onMounted(async () => {
         <label for="content">What's on your mind?</label>
       </FloatLabel>
       <FileUpload mode="basic" @select="previewImage" customUpload auto severity="secondary" class="p-button-outlined" />
-      <Button type="submit" label="Post" severity="info" rounded icon="pi pi-send"/>
+      <Button type="submit" label="Post" severity="success" rounded icon="pi pi-send"/>
     </form>
     <div class="card flex flex-wrap justify-center gap-4">
       <Image v-if="preview" :src="preview" alt="Image" width="250" preview/>
@@ -104,6 +104,8 @@ onMounted(async () => {
     <PostList :paginatedPosts="paginatedPosts" v-if="paginatedPosts.content?.length != 0"/>
     <div v-else class="text-center font-bold font-italic text-2xl">No posts yet!</div>
   </section>
+
+  <a href="https://www.flaticon.com/free-icons/facebook" title="facebook icons">Facebook icons created by QudaDesign - Flaticon</a>
   <LogoutButton/>
   <Toast/>
 
