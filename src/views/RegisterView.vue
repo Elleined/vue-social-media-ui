@@ -14,10 +14,11 @@ const firstName = ref<string>('')
 const lastName = ref<string>('')
 const username = ref<string>('')
 const password = ref<string>('')
+const attachment = ref()
 
 async function register() {
   try {
-    await userService.save(firstName.value, lastName.value, username.value, password.value)
+    await userService.save(firstName.value, lastName.value, username.value, password.value, attachment.value)
     await router.push('/login')
   } catch (e) {
     handleError(toast, e)

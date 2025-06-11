@@ -8,6 +8,7 @@ export const userService = {
         lastName: string,
         email: string,
         password: string,
+        attachment: string,
     ): Promise<number> {
 
         if (!firstName)
@@ -27,6 +28,7 @@ export const userService = {
             last_name: lastName,
             email: email,
             password: password,
+            attachment: attachment
         })
 
         return response.data
@@ -86,6 +88,22 @@ export const userService = {
 
     async getAllWithDefault(): Promise<Page<User>> {
         return await this.getAll(1, 10, "created_at", "desc", true)
+    },
+
+    async updateAttachment(userId: number, attachment: string): Promise<string> {
+        if (!userId || userId < 0)
+            throw new Error("please provide user")
+
+        if (!attachment)
+            throw new Error("please provide attachment")
+
+        const response = await APIClient().patch(`/users/${userId}/attachment`, null, {
+            params: {
+                attachment: attachment
+            }
+        })
+
+        return response.data
     },
 
     async updateStatus(userId: number, status: boolean): Promise<boolean> {
