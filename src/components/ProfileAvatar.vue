@@ -1,22 +1,21 @@
 <script setup lang="ts">
 
-import {onMounted, ref, toRef, toRefs} from "vue";
+import {onMounted, ref, toRef} from "vue";
 
 const props = defineProps<{
-  picture: any
+  attachment: any
 }>()
 
-const attachment = toRef(props, "picture")
+const attachment = toRef(props, "attachment")
 const preview = ref()
 
 onMounted(() => {
-  const blob = new Blob([attachment.value]);
-  preview.value = URL.createObjectURL(blob);
+  preview.value = URL.createObjectURL(new Blob([attachment.value]));
 })
 </script>
 
 <template>
-  <Avatar :image="preview" shape="circle" size="large" class="mt-1"/>
+  <Avatar v-if="attachment" :image="preview" shape="circle" size="large" class="mt-1"/>
 </template>
 
 <style scoped>

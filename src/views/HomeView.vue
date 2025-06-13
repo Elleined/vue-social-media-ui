@@ -9,11 +9,13 @@ import type Page from "@/models/paging/Page.ts";
 import {useToast} from "primevue";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {fileService} from "@/services/FileService.ts";
-import ProfileAvatar from "@/components/ProfileAvatar.vue";
+import {useCurrentUserStore} from "@/stores/CurrentUserStore.ts";
 
 const toast = useToast()
 const accessTokenStore = useAccessTokenStore()
+const currentUserStore = useCurrentUserStore()
 
+// for selected image preview
 const preview = ref()
 
 const content = ref<string>('')
@@ -25,10 +27,9 @@ const save = async () => {
     if (!attachment.value) {
       const postId: number = await postService.save(content.value);
       const post: Post = await postService.getById(postId)
-
       paginatedPosts.value.content.unshift(post)
-      toast.add({severity: 'success', summary: 'Success Message', detail: `post saved successfully`, life: 1500});
 
+      toast.add({severity: 'success', summary: 'Success Message', detail: `post saved successfully`, life: 1500});
       clearFields()
       return
     }
@@ -36,17 +37,16 @@ const save = async () => {
     const uploadedAttachment: string = await fileService.upload("post", attachment.value)
     const postId: number = await postService.save(content.value, uploadedAttachment)
     const post: Post = await postService.getById(postId)
-
     paginatedPosts.value.content.unshift(post)
-    toast.add({severity: 'success', summary: 'Success Message', detail: `post saved successfully`, life: 1500});
 
+    toast.add({severity: 'success', summary: 'Success Message', detail: `post saved successfully`, life: 1500});
     clearFields()
   } catch (e) {
     handleError(toast, e)
   }
 }
 
-const previewImage = (event: any) => {
+const previewAttachment = (event: any) => {
   attachment.value = event.files[0]
   const reader = new FileReader()
 
@@ -59,6 +59,12 @@ const previewImage = (event: any) => {
   reader.readAsDataURL(attachment.value)
 }
 
+const clearFields = () => {
+  content.value = ''
+  attachment.value = null
+  preview.value = null
+}
+
 const setAccessToken = () => {
   const hash = window.location.hash.substring(1) // Remove '#'
   const params = new URLSearchParams(hash)
@@ -68,16 +74,14 @@ const setAccessToken = () => {
   }
 }
 
-const clearFields = () => {
-  content.value = ''
-  attachment.value = null
-  preview.value = null
+const getAllPostsWithDefault = async () => {
+  paginatedPosts.value = await postService.getAllWithDefault()
 }
 
 onMounted(async () => {
   try {
     setAccessToken()
-    paginatedPosts.value = await postService.getAllWithDefault()
+    await getAllPostsWithDefault()
   } catch (e) {
     handleError(toast, e)
   }
@@ -88,13 +92,12 @@ onMounted(async () => {
 <template>
   <header class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-4 space-y-4 mb-5 mt-4">
     <form class="flex justify-center items-center gap-4" @submit.prevent="save()">
-      <ProfileAvatar :picture="" />
       <Avatar image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" shape="circle" size="large"/>
       <FloatLabel>
         <InputText id="content" v-model="content" required/>
         <label for="content">What's on your mind?</label>
       </FloatLabel>
-      <FileUpload mode="basic" @select="previewImage" customUpload auto severity="secondary" class="p-button-outlined" />
+      <FileUpload mode="basic" @select="previewAttachment" customUpload auto severity="secondary" class="p-button-outlined" />
       <Button type="submit" label="Post" severity="success" rounded icon="pi pi-send"/>
     </form>
     <div class="card flex flex-wrap justify-center gap-4">

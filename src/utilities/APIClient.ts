@@ -1,6 +1,5 @@
 import axios, {type AxiosInstance} from "axios";
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
-import {useRouter} from "vue-router";
 import {refreshService} from "@/services/RefreshService.ts";
 
 export const BASE_URL: string = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`
@@ -31,7 +30,6 @@ export function APIClient(): AxiosInstance {
 
 
 export function APIClientWithCredentials(): AxiosInstance {
-    const router = useRouter();
     const accessTokenStore = useAccessTokenStore();
 
     const client: AxiosInstance = axios.create({
@@ -89,7 +87,7 @@ export function APIClientWithCredentials(): AxiosInstance {
                 } catch (e: any) {
                     accessTokenStore.setPrincipal("");
                     processQueue(e);
-                    await router.push('/login');
+                    window.location.href = "/login"
                     return Promise.reject(error); // Reject the promise so the calling function knows it failed
                 } finally {
                     isRefreshing = false;

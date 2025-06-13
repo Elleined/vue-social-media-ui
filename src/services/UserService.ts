@@ -34,8 +34,13 @@ export const userService = {
         return response.data
     },
 
-    async getByJWT(): Promise<User> {
-        const response = await APIClientWithCredentials().get(`/users/jwt`)
+    async getByJWT(jwt: string): Promise<User> {
+        const response = await APIClientWithCredentials().get(`/users/jwt`, {
+            headers: {
+                Authorization: `Bearer ${jwt}`
+            }
+        })
+
         return response.data
     },
 

@@ -11,10 +11,12 @@ import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {useToast} from "primevue";
 import {userService} from "@/services/UserService.ts";
+import {useCurrentUserStore} from "@/stores/CurrentUserStore.ts";
 
 const toast = useToast()
 const router = useRouter()
 const accessTokenStore = useAccessTokenStore()
+const currentUserStore = useCurrentUserStore()
 
 const username = ref<string>('')
 const password = ref<string>('')
@@ -22,7 +24,11 @@ const password = ref<string>('')
 async function authenticate() {
   try {
     const jwt = await userService.login(username.value, password.value)
+    const currentUser = await userService.getByJWT(jwt)
+
     accessTokenStore.setPrincipal(jwt)
+    currentUserStore.setPrincipal(currentUser)
+
     await router.push('/home')
   } catch (e) {
     handleError(toast, e)
