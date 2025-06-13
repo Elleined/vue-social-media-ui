@@ -20,7 +20,7 @@ const router = createRouter({
       name: 'login',
       component: LoginView,
       beforeEnter: (to, from, next) => {
-        if (useAccessTokenStore().getPrincipal()) {
+        if (useAccessTokenStore().get()) {
           return next('/home')
         }
 

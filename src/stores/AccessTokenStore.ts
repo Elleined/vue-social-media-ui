@@ -4,19 +4,19 @@ import {ref} from "vue";
 export const useAccessTokenStore = defineStore('accessToken', () => {
     const principal = ref<string>('')
 
-    function getPrincipal(): string {
+    function get(): string {
         return principal.value
     }
 
-    function setPrincipal(accessToken: string) {
+    function set(accessToken: string) {
         principal.value = accessToken
     }
 
-    function clearPrincipal(): void {
+    function clear(): void {
         principal.value = ""
     }
 
-    return { principal, getPrincipal, setPrincipal, clearPrincipal }
+    return { principal, get, set, clear }
 }, {
     persist: {
         storage: localStorage

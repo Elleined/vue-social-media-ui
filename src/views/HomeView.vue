@@ -9,9 +9,13 @@ import type Page from "@/models/paging/Page.ts";
 import {useToast} from "primevue";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {fileService} from "@/services/FileService.ts";
+import type User from "@/models/User.ts";
+import {userService} from "@/services/UserService.ts";
+import {useCurrentUserStore} from "@/stores/CurrentUserStore.ts";
 
 const toast = useToast()
 const accessTokenStore = useAccessTokenStore()
+const currentUserStore = useCurrentUserStore()
 
 // for selected image preview
 const preview = ref()
@@ -69,10 +73,12 @@ onMounted(async () => {
     const params = new URLSearchParams(hash)
     const accessToken = params.get('access_token')
     if (accessToken) {
-      accessTokenStore.setPrincipal(accessToken)
+      const currentUser: User = await userService.getByJWT(accessToken)
+
+      accessTokenStore.set(accessToken)
+      currentUserStore.set(currentUser)
     }
 
-    console.log(useAccessTokenStore().getPrincipal())
     paginatedPosts.value = await postService.getAllWithDefault()
   } catch (e) {
     handleError(toast, e)
