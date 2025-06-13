@@ -16,7 +16,9 @@ export const useAccessTokenStore = defineStore('accessToken', () => {
         principal.value = ""
     }
 
-    return { getPrincipal, setPrincipal, clearPrincipal }
+    return { principal, getPrincipal, setPrincipal, clearPrincipal }
 }, {
-    persist: true
+    persist: {
+        storage: localStorage
+    }
 })

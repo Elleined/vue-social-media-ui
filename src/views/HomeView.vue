@@ -9,13 +9,9 @@ import type Page from "@/models/paging/Page.ts";
 import {useToast} from "primevue";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {fileService} from "@/services/FileService.ts";
-import {useCurrentUserStore} from "@/stores/CurrentUserStore.ts";
-import {userService} from "@/services/UserService.ts";
-import type User from "@/models/User.ts";
 
 const toast = useToast()
 const accessTokenStore = useAccessTokenStore()
-const currentUserStore = useCurrentUserStore()
 
 // for selected image preview
 const preview = ref()
@@ -73,12 +69,10 @@ onMounted(async () => {
     const params = new URLSearchParams(hash)
     const accessToken = params.get('access_token')
     if (accessToken) {
-      const currentUser: User = await userService.getByJWT(accessToken)
-
       accessTokenStore.setPrincipal(accessToken)
-      currentUserStore.setPrincipal(currentUser)
     }
 
+    console.log(useAccessTokenStore().getPrincipal())
     paginatedPosts.value = await postService.getAllWithDefault()
   } catch (e) {
     handleError(toast, e)
@@ -90,7 +84,7 @@ onMounted(async () => {
 <template>
   <header class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-4 space-y-4 mb-5 mt-4">
     <form class="flex justify-center items-center gap-4" @submit.prevent="save()">
-      <Avatar image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" shape="circle" size="large"/>
+<!--      <UserAvatar v-if="currentUserStore.getPrincipal().attachment.Valid" :url="`http://localhost:8090/folders/user/files/${currentUserStore.getPrincipal().attachment.String}`" />-->
       <FloatLabel>
         <InputText id="content" v-model="content" required/>
         <label for="content">What's on your mind?</label>
