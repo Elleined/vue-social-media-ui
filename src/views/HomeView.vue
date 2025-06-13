@@ -9,6 +9,7 @@ import type Page from "@/models/paging/Page.ts";
 import {useToast} from "primevue";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {fileService} from "@/services/FileService.ts";
+import ProfileAvatar from "@/components/ProfileAvatar.vue";
 
 const toast = useToast()
 const accessTokenStore = useAccessTokenStore()
@@ -22,7 +23,7 @@ const paginatedPosts = ref<Page<Post>>({} as Page<Post>)
 const save = async () => {
   try {
     if (!attachment.value) {
-      const postId: number = await postService.save(content.value, attachment.value);
+      const postId: number = await postService.save(content.value);
       const post: Post = await postService.getById(postId)
 
       paginatedPosts.value.content.unshift(post)
@@ -87,6 +88,7 @@ onMounted(async () => {
 <template>
   <header class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-4 space-y-4 mb-5 mt-4">
     <form class="flex justify-center items-center gap-4" @submit.prevent="save()">
+      <ProfileAvatar :picture="" />
       <Avatar image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" shape="circle" size="large"/>
       <FloatLabel>
         <InputText id="content" v-model="content" required/>

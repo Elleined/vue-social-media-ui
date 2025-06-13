@@ -8,6 +8,7 @@ import {formatDate} from "@/utilities/DateFormatter.ts";
 import {fileService} from "@/services/FileService.ts";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {useToast} from "primevue";
+import ProfileAvatar from "@/components/ProfileAvatar.vue";
 
 const toast = useToast()
 
@@ -80,7 +81,6 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col gap-5">
     <header class="flex items-start gap-3">
-      <Avatar image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" shape="circle" size="large" class="mt-1"/>
       <div>
         <p class="font-bold">{{ author.first_name }} {{ author.last_name }}</p>
         <p class="font-light">{{ formattedDate }}</p>

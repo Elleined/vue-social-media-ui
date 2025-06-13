@@ -3,7 +3,7 @@ import type Post from "@/models/Post.ts";
 import {APIClientWithCredentials} from "@/utilities/APIClient.ts";
 
 export const postService = {
-    async save(content: string, attachment: string | undefined): Promise<number> {
+    async save(content: string, attachment?: string): Promise<number> {
         if (!content)
             throw new Error("please provide content");
 

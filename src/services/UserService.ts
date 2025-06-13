@@ -8,7 +8,7 @@ export const userService = {
         lastName: string,
         email: string,
         password: string,
-        attachment: string,
+        attachment?: string,
     ): Promise<number> {
 
         if (!firstName)
