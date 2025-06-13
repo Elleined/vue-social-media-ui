@@ -10,6 +10,8 @@ import {useToast} from "primevue";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {fileService} from "@/services/FileService.ts";
 import {useCurrentUserStore} from "@/stores/CurrentUserStore.ts";
+import {userService} from "@/services/UserService.ts";
+import type User from "@/models/User.ts";
 
 const toast = useToast()
 const accessTokenStore = useAccessTokenStore()
@@ -65,23 +67,19 @@ const clearFields = () => {
   preview.value = null
 }
 
-const setAccessToken = () => {
-  const hash = window.location.hash.substring(1) // Remove '#'
-  const params = new URLSearchParams(hash)
-  const accessToken = params.get('access_token')
-  if (accessToken) {
-    accessTokenStore.setPrincipal(accessToken)
-  }
-}
-
-const getAllPostsWithDefault = async () => {
-  paginatedPosts.value = await postService.getAllWithDefault()
-}
-
 onMounted(async () => {
   try {
-    setAccessToken()
-    await getAllPostsWithDefault()
+    const hash = window.location.hash.substring(1) // Remove '#'
+    const params = new URLSearchParams(hash)
+    const accessToken = params.get('access_token')
+    if (accessToken) {
+      const currentUser: User = await userService.getByJWT(accessToken)
+
+      accessTokenStore.setPrincipal(accessToken)
+      currentUserStore.setPrincipal(currentUser)
+    }
+
+    paginatedPosts.value = await postService.getAllWithDefault()
   } catch (e) {
     handleError(toast, e)
   }
