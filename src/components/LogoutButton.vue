@@ -12,7 +12,7 @@ const accessTokenStore = useAccessTokenStore()
 async function logout() {
   try {
     await userService.logout()
-    accessTokenStore.setPrincipal("")
+    accessTokenStore.clearToken()
     await router.push('/login')
   } catch (e) {
     handleError(toast, e)

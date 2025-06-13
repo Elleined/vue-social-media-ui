@@ -12,7 +12,11 @@ export const useAccessTokenStore = defineStore('accessToken', () => {
         principal.value = accessToken
     }
 
-    return { principal, getPrincipal, setPrincipal }
+    function clearToken() {
+        principal.value = ""
+    }
+
+    return { principal, getPrincipal, setPrincipal, clearToken }
 }, {
     persist: true
 })
