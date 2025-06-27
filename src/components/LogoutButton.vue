@@ -9,10 +9,8 @@ const router = useRouter()
 
 async function logout() {
   try {
-    await Promise.all([
-      userService.logout(),
-      router.push('/login')
-    ])
+    await userService.logout()
+    await router.push('/login')
   } catch (e) {
     handleError(toast, e)
   }

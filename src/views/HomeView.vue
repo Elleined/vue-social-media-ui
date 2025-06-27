@@ -1,19 +1,14 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import LogoutButton from "@/components/LogoutButton.vue";
-import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 import PostList from "@/components/post/PostList.vue";
 import {postService} from "@/services/PostService.ts";
 import {useToast} from "primevue";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {fileService} from "@/services/FileService.ts";
-import {userService} from "@/services/UserService.ts";
-import {useCurrentUserStore} from "@/stores/CurrentUserStore.ts";
-import type {Page, Post, User} from "@/models/models.ts";
+import type {Page, Post} from "@/models/models.ts";
 
 const toast = useToast()
-const accessTokenStore = useAccessTokenStore()
-const currentUserStore = useCurrentUserStore()
 
 // for selected image preview
 const preview = ref()

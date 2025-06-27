@@ -19,11 +19,8 @@ const password = ref<string>('')
 
 async function authenticate() {
   try {
-    await Promise.all([
-      userService.login(username.value, password.value),
-      router.push('/home')
-    ]);
-
+    await userService.login(username.value, password.value)
+    await router.push('/home')
   } catch (e) {
     handleError(toast, e)
   }
