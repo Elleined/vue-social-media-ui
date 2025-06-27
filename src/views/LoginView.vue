@@ -11,8 +11,8 @@ import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {useToast} from "primevue";
 import {userService} from "@/services/UserService.ts";
-import type User from "@/models/User.ts";
 import {useCurrentUserStore} from "@/stores/CurrentUserStore.ts";
+import type {User} from "@/models/models.ts";
 
 const toast = useToast()
 const router = useRouter()

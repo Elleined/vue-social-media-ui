@@ -1,5 +1,6 @@
 import {APIClient, APIClientWithCredentials} from "@/utilities/APIClient.ts";
-import type {Refresh} from "@/models/Refresh.ts";
+import type {Refresh} from "@/models/models.ts";
+
 
 export const refreshService = {
     async refreshToken() {

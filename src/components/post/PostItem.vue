@@ -1,13 +1,12 @@
 <script setup lang="ts">
 
-import type Post from "@/models/Post.ts";
 import {computed, onMounted, ref, toRef} from "vue";
-import type User from "@/models/User.ts";
 import {userService} from "@/services/UserService.ts";
 import {formatDate} from "@/utilities/DateFormatter.ts";
 import {fileService} from "@/services/FileService.ts";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {useToast} from "primevue";
+import type {Post, User} from "@/models/models.ts";
 
 const toast = useToast()
 

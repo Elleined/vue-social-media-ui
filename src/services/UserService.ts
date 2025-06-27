@@ -1,6 +1,6 @@
 import {APIClient, APIClientWithCredentials} from "@/utilities/APIClient.ts";
-import type Page from "@/models/paging/Page.ts";
-import type User from "@/models/User.ts";
+import type {Page, User} from "@/models/models.ts";
+
 
 export const userService = {
     async save(

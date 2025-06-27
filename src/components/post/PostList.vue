@@ -2,7 +2,7 @@
 
 import PostItem from "@/components/post/PostItem.vue";
 import type Page from "@/models/paging/Page.ts";
-import type Post from "@/models/Post.ts";
+import type {Post} from "@/models/models.ts";
 
 defineProps<{
   paginatedPosts: Page<Post>

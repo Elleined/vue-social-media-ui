@@ -1,6 +1,5 @@
-import type Page from "@/models/paging/Page.ts";
-import type {CommentReaction} from "@/models/CommentReaction.ts";
 import {APIClientWithCredentials} from "@/utilities/APIClient.ts";
+import type {CommentReaction, Page} from "@/models/models.ts";
 
 export const commentService = {
     async save(postId: number, content: string, attachment: string): Promise<number> {

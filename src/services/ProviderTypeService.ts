@@ -1,5 +1,6 @@
 import {APIClientWithCredentials} from "@/utilities/APIClient.ts";
-import type {ProviderType} from "@/models/ProviderType.ts";
+import type {ProviderType} from "@/models/models.ts";
+
 
 export const providerTypeService = {
     async save(name: string): Promise<number> {

@@ -2,8 +2,8 @@ import axios, {type AxiosInstance} from "axios";
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 import {refreshService} from "@/services/RefreshService.ts";
 import {useCurrentUserStore} from "@/stores/CurrentUserStore.ts";
-import type User from "@/models/User.ts";
 import {userService} from "@/services/UserService.ts";
+import type {User} from "@/models/models.ts";
 
 export const BASE_URL: string = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`
 

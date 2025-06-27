@@ -3,15 +3,13 @@ import {onMounted, ref} from "vue";
 import LogoutButton from "@/components/LogoutButton.vue";
 import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 import PostList from "@/components/post/PostList.vue";
-import type Post from "@/models/Post.ts";
 import {postService} from "@/services/PostService.ts";
-import type Page from "@/models/paging/Page.ts";
 import {useToast} from "primevue";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {fileService} from "@/services/FileService.ts";
-import type User from "@/models/User.ts";
 import {userService} from "@/services/UserService.ts";
 import {useCurrentUserStore} from "@/stores/CurrentUserStore.ts";
+import type {Page, Post, User} from "@/models/models.ts";
 
 const toast = useToast()
 const accessTokenStore = useAccessTokenStore()
