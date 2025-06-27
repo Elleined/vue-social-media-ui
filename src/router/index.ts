@@ -23,7 +23,6 @@ const router = createRouter({
         if (useAccessTokenStore().get()) {
           return next('/home')
         }
-
         next()
       }
     },
