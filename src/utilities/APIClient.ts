@@ -12,13 +12,3 @@ export function APIClient(): AxiosInstance {
     })
 }
 
-export function APIClientWithCredentials(): AxiosInstance {
-    return  axios.create({
-        baseURL: BASE_URL,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        withCredentials: true
-    });
-}
-

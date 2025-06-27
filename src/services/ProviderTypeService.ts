@@ -1,4 +1,4 @@
-import {APIClientWithCredentials} from "@/utilities/APIClient.ts";
+import {APIClient} from "@/utilities/APIClient.ts";
 import type {ProviderType} from "@/models/models.ts";
 
 
@@ -7,7 +7,7 @@ export const providerTypeService = {
         if (!name)
             throw new Error("please provide name")
 
-        const response = await APIClientWithCredentials().post("/provider-types", null, {
+        const response = await APIClient().post("/provider-types", null, {
             params: {
                 name: name
             }
@@ -20,7 +20,7 @@ export const providerTypeService = {
         if (!id || id < 0)
             throw new Error("please provide refresh token id")
 
-        const response = await APIClientWithCredentials().get(`/provider-types/${id}`)
+        const response = await APIClient().get(`/provider-types/${id}`)
         return response.data
     },
 
@@ -28,12 +28,12 @@ export const providerTypeService = {
         if (!id || id < 0)
             throw new Error("please provide refresh token id")
 
-        const response = await APIClientWithCredentials().delete(`/provider-types/${id}`)
+        const response = await APIClient().delete(`/provider-types/${id}`)
         return response.data
     },
 
     async getAll(): Promise<ProviderType[]> {
-        const response = await APIClientWithCredentials().get(`/provider-types`)
+        const response = await APIClient().get(`/provider-types`)
         return response.data
     },
 
@@ -44,7 +44,7 @@ export const providerTypeService = {
         if (!name)
             throw new Error("please provide name")
 
-        const response = await APIClientWithCredentials().patch(`/provider-types/${id}`, null, {
+        const response = await APIClient().patch(`/provider-types/${id}`, null, {
             params: {
                 name: name,
             }

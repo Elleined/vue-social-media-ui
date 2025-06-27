@@ -1,4 +1,4 @@
-import {APIClientWithCredentials} from "@/utilities/APIClient.ts";
+import {APIClient} from "@/utilities/APIClient.ts";
 import type {CommentReaction, Page} from "@/models/models.ts";
 
 export const commentService = {
@@ -9,7 +9,7 @@ export const commentService = {
         if (!content)
             throw new Error("please provide content")
 
-        const response = await APIClientWithCredentials().post(`/users/posts/${postId}/comments`, {
+        const response = await APIClient().post(`/users/posts/${postId}/comments`, {
             content: content,
             attachment: attachment
         })
@@ -39,7 +39,7 @@ export const commentService = {
         if (!sortBy)
             throw new Error("please provide sort by")
 
-        const response = await APIClientWithCredentials().get(`/users/posts/${postId}/comments`, {
+        const response = await APIClient().get(`/users/posts/${postId}/comments`, {
             params: {
                 page: page,
                 pageSize: size,
@@ -62,7 +62,7 @@ export const commentService = {
         if (!content)
             throw new Error("please provide content")
 
-        const response = await APIClientWithCredentials().patch(`/users/posts/${postId}/comments/${commentId}/content`, null, {
+        const response = await APIClient().patch(`/users/posts/${postId}/comments/${commentId}/content`, null, {
             params: {
                 content: content
             }
@@ -81,7 +81,7 @@ export const commentService = {
         if (!attachment)
             throw new Error("please provide attachment")
 
-        const response = await APIClientWithCredentials().patch(`/users/posts/${postId}/comments/${commentId}/attachment`, null, {
+        const response = await APIClient().patch(`/users/posts/${postId}/comments/${commentId}/attachment`, null, {
             params: {
                 attachment: attachment
             }
@@ -97,7 +97,7 @@ export const commentService = {
         if (!commentId || commentId < 0)
             throw new Error("please provide comment id")
 
-        const response = await APIClientWithCredentials().delete(`/users/posts/${postId}/comments/${commentId}`)
+        const response = await APIClient().delete(`/users/posts/${postId}/comments/${commentId}`)
         return response.data
     },
 
@@ -108,7 +108,7 @@ export const commentService = {
         if (!commentId || commentId < 0)
             throw new Error("please provide comment id")
 
-        const response = await APIClientWithCredentials().delete(`/users/posts/${postId}/comments/${commentId}`)
+        const response = await APIClient().delete(`/users/posts/${postId}/comments/${commentId}`)
         return response.data
     },
 }

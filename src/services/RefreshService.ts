@@ -1,4 +1,4 @@
-import {APIClient, APIClientWithCredentials} from "@/utilities/APIClient.ts";
+import {APIClient} from "@/utilities/APIClient.ts";
 import type {Refresh} from "@/models/models.ts";
 
 
@@ -9,7 +9,7 @@ export const refreshService = {
     },
 
     async getAll(): Promise<Refresh> {
-        const response = await APIClientWithCredentials().get("/users/refresh-tokens")
+        const response = await APIClient().get("/users/refresh-tokens")
         return response.data
     },
 
@@ -17,7 +17,7 @@ export const refreshService = {
         if (!id || id < 0)
             throw new Error("please provide refresh token id")
 
-        const response = await APIClientWithCredentials().delete(`/users/refresh-tokens/${id}`)
+        const response = await APIClient().delete(`/users/refresh-tokens/${id}`)
         return response.data
     }
 }

@@ -1,4 +1,4 @@
-import {APIClientWithCredentials} from "@/utilities/APIClient.ts";
+import {APIClient} from "@/utilities/APIClient.ts";
 import type {Page, PostReaction} from "@/models/models.ts";
 
 export const postReactionService = {
@@ -10,7 +10,7 @@ export const postReactionService = {
         if (!emojiId || emojiId < 0)
             throw new Error("please provide emoji id")
 
-        const response = await APIClientWithCredentials().post(`users/posts/${postId}/reactions`, null, {
+        const response = await APIClient().post(`users/posts/${postId}/reactions`, null, {
             params: {
                 emojiId: emojiId,
             }
@@ -26,7 +26,7 @@ export const postReactionService = {
         if (!reactionId || reactionId < 0)
             throw new Error("please provide reaction id")
 
-        const response = await APIClientWithCredentials().get(`users/posts/${postId}/reactions/${reactionId}`)
+        const response = await APIClient().get(`users/posts/${postId}/reactions/${reactionId}`)
         return response.data
     },
 
@@ -51,7 +51,7 @@ export const postReactionService = {
         if (!sortBy)
             throw new Error("please provide sort by")
 
-        const response = await APIClientWithCredentials().get(`/users/posts/${postId}/reactions`, {
+        const response = await APIClient().get(`/users/posts/${postId}/reactions`, {
             params: {
                 page: page,
                 pageSize: size,
@@ -88,7 +88,7 @@ export const postReactionService = {
         if (!sortBy)
             throw new Error("please provide sort by")
 
-        const response = await APIClientWithCredentials().get(`/users/posts/${postId}/reactions/emoji/${emojiId}`, {
+        const response = await APIClient().get(`/users/posts/${postId}/reactions/emoji/${emojiId}`, {
             params: {
                 page: page,
                 pageSize: size,
@@ -107,7 +107,7 @@ export const postReactionService = {
         if (!emojiId || emojiId < 0)
             throw new Error("please provide emoji id")
 
-        const response = await APIClientWithCredentials().patch(`users/posts/${postId}/reactions/emoji/${emojiId}`)
+        const response = await APIClient().patch(`users/posts/${postId}/reactions/emoji/${emojiId}`)
         return response.data
     },
 
@@ -115,7 +115,7 @@ export const postReactionService = {
         if (!postId || postId < 0)
             throw new Error("please provide post id")
 
-        const response = await APIClientWithCredentials().delete(`users/posts/${postId}/reactions`)
+        const response = await APIClient().delete(`users/posts/${postId}/reactions`)
         return response.data
     },
 }

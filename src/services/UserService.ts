@@ -1,4 +1,4 @@
-import {APIClient, APIClientWithCredentials} from "@/utilities/APIClient.ts";
+import {APIClient} from "@/utilities/APIClient.ts";
 import type {Page, User} from "@/models/models.ts";
 
 
@@ -35,7 +35,7 @@ export const userService = {
     },
 
     async getByJWT(jwt: string): Promise<User> {
-        const response = await APIClientWithCredentials().get(`/users/jwt`, {
+        const response = await APIClient().get(`/users/jwt`, {
             headers: {
                 Authorization: `Bearer ${jwt}`
             }
