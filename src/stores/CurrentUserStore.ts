@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import type User from "@/models/User.ts";
+import type {User} from "@/models/models.ts";
 
 export const useCurrentUserStore = defineStore('currentUser', () => {
     const principal = ref<User | null>(null)

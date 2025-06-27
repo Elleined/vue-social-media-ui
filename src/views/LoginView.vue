@@ -7,29 +7,23 @@ import facebook from "@/assets/facebook.png";
 
 import {ref} from "vue";
 import {BASE_URL} from "@/utilities/APIClient.ts";
-import {useAccessTokenStore} from "@/stores/AccessTokenStore.ts";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {useToast} from "primevue";
 import {userService} from "@/services/UserService.ts";
-import {useCurrentUserStore} from "@/stores/CurrentUserStore.ts";
-import type {User} from "@/models/models.ts";
 
 const toast = useToast()
 const router = useRouter()
-const accessTokenStore = useAccessTokenStore()
-const currentUserStore = useCurrentUserStore()
 
 const username = ref<string>('')
 const password = ref<string>('')
 
 async function authenticate() {
   try {
-    const accessToken: string = await userService.login(username.value, password.value)
-    const currentUser: User = await userService.getByJWT(accessToken)
+    await Promise.all([
+      userService.login(username.value, password.value),
+      router.push('/home')
+    ]);
 
-    accessTokenStore.set(accessToken)
-    currentUserStore.set(currentUser)
-    await router.push('/home')
   } catch (e) {
     handleError(toast, e)
   }

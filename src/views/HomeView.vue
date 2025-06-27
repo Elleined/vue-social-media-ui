@@ -67,16 +67,6 @@ const clearFields = () => {
 
 onMounted(async () => {
   try {
-    const hash = window.location.hash.substring(1) // Remove '#'
-    const params = new URLSearchParams(hash)
-    const accessToken = params.get('access_token')
-    if (accessToken) {
-      const currentUser: User = await userService.getByJWT(accessToken)
-
-      accessTokenStore.set(accessToken)
-      currentUserStore.set(currentUser)
-    }
-
     paginatedPosts.value = await postService.getAllWithDefault()
   } catch (e) {
     handleError(toast, e)
