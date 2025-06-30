@@ -24,45 +24,43 @@ const paginatedPosts = ref<Page<Post>>({} as Page<Post>)
 const postSaveMutation = useMutation({
   mutationFn: postService.save,
   onSuccess: (data: number) => {
-
+    // get post by id
+    // unshift the paginated post
+    toast.add({severity: 'success', summary: 'Success Message', detail: `post saved successfully`, life: 1500});
+    content.value = ''
+    attachment.value = null
+    preview.value = null
   },
   onError: (error: Error) => {
     handleError(toast, error)
   }
 })
 
-const save = async () => {
-  try {
-    if (!attachment.value) {
-      const postId: number = await postService.save(content.value);
-      const post: Post = await postService.getById(postId)
-      paginatedPosts.value.content.unshift(post)
-
-      toast.add({severity: 'success', summary: 'Success Message', detail: `post saved successfully`, life: 1500});
-      clearFields()
-      return
-    }
-
-    const uploadedAttachment: string = await fileClientService.upload({
-      folder: "post",
-      attachment: attachment.value,
+const uploadMutation = useMutation({
+  mutationFn: fileClientService.upload,
+  onSuccess: (data: string) => {
+    postSaveMutation.mutate({
+      content: content.value,
+      attachment: data
     })
-
-    const postId: number = await postService.save(content.value, uploadedAttachment)
-    const post: Post = await postService.getById(postId)
-    paginatedPosts.value.content.unshift(post)
-
-    toast.add({severity: 'success', summary: 'Success Message', detail: `post saved successfully`, life: 1500});
-    clearFields()
-  } catch (e) {
-    handleError(toast, e)
+  },
+  onError: (error: Error) => {
+    handleError(toast, error);
   }
-}
+})
 
-const clearFields = () => {
-  content.value = ''
-  attachment.value = null
-  preview.value = null
+function save() {
+  if (!attachment.value) {
+    postSaveMutation.mutate({
+      content: content.value
+    })
+    return
+  }
+
+  uploadMutation.mutate({
+    folder: "post",
+    attachment: attachment.value,
+  })
 }
 
 function previewAttachment(event: any): void {

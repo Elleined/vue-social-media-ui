@@ -1,15 +1,16 @@
 import {ApiClient} from "@/api/api.client.ts";
 import type {Page} from "@/types/models/page/page.model.ts";
 import type {Post} from "@/types/models/post/post.model.ts";
+import type {PostRequest} from "@/types/request/post.request.ts";
 
 export const postService = {
-    async save(content: string, attachment?: string): Promise<number> {
-        if (!content)
+    async save(request: PostRequest): Promise<number> {
+        if (!request.content)
             throw new Error("please provide content");
 
         const response = await ApiClient().post("/users/posts", {
-            content: content,
-            attachment: attachment
+            content: request.content,
+            attachment: request.attachment
         })
 
         return response.data
