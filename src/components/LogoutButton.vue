@@ -9,7 +9,7 @@ const toast = useToast()
 const router = useRouter()
 
 const logoutMutation = useMutation({
-  mutationFn: () => userService.logout(),
+  mutationFn: userService.logout,
   onSuccess: async () => {
     await router.push('/login')
   },
@@ -24,7 +24,7 @@ function logout() {
 </script>
 
 <template>
-  <Button icon="pi pi-sign-out" severity="danger" variant="text" rounded aria-label="Logout" @click="logout()" />
+  <Button icon="pi pi-sign-out" severity="danger" variant="text" rounded aria-label="Logout" label="Logout" @click="logout()" :loading="logoutMutation.isPending.value" />
   <Toast />
 </template>
 

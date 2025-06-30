@@ -11,7 +11,6 @@ import handleError from "@/utils/axios-error.util.ts";
 import {useToast} from "primevue";
 import {userService} from "@/services/user/user.service.ts";
 import {useMutation} from "@tanstack/vue-query";
-import type {LoginRequest} from "@/types/request/login.request.ts";
 
 const toast = useToast()
 const router = useRouter()
@@ -20,7 +19,7 @@ const username = ref<string>('')
 const password = ref<string>('')
 
 const loginMutation = useMutation({
-  mutationFn: (request: LoginRequest) => userService.login(request),
+  mutationFn: userService.login,
   onSuccess: async () => {
     await router.push("/home");
   },

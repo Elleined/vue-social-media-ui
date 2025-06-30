@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {useRouter} from "vue-router";
 import {useToast} from "primevue";
 import handleError from "@/utils/axios-error.util.ts";
@@ -9,6 +9,7 @@ import {fileClientService} from "@/services/file-client/file-client.service.ts";
 import {useMutation} from "@tanstack/vue-query";
 import type {RegisterRequest} from "@/types/request/register.request.ts";
 import type {FileUploadRequest} from "@/types/request/file-upload.request.ts";
+import {imageUtil} from "@/utils/image-preview.util.ts";
 
 const toast = useToast()
 const router = useRouter()
@@ -22,23 +23,10 @@ const attachment = ref()
 // for selected image preview
 const preview = ref()
 
-const previewImage = (event: any) => {
-  attachment.value = event.files[0]
-  const reader = new FileReader()
-
-  reader.onload = () => {
-    if (reader.result) {
-      preview.value = reader.result
-    }
-  }
-
-  reader.readAsDataURL(attachment.value)
-}
-
 // Mutations
 const saveMutation = useMutation({
-  mutationFn: (request: RegisterRequest) => userService.save(request),
-  onSuccess: async () => {
+  mutationFn: userService.save,
+  onSuccess: async (data: number) => {
     await router.push('/login')
   },
   onError: (error: Error) => {
@@ -47,8 +35,8 @@ const saveMutation = useMutation({
 });
 
 const uploadMutation = useMutation({
-  mutationFn: (request: FileUploadRequest) => fileClientService.upload(request.folder, request.attachment),
-  onSuccess: (data) => {
+  mutationFn: fileClientService.upload,
+  onSuccess: (data: string) => {
     saveMutation.mutate({
       firstName: firstName.value,
       lastName: lastName.value,
@@ -81,6 +69,10 @@ function register(): void {
 
 async function goToLogin() {
   await router.push('/login')
+}
+
+function previewAttachment(event: any): void {
+  imageUtil.previewAttachment(event, attachment, preview);
 }
 
 </script>
@@ -118,7 +110,7 @@ async function goToLogin() {
           <Password v-model="password" inputId="password" variant="filled"  />
           <label for="password">Password</label>
         </IftaLabel>
-        <FileUpload mode="basic" @select="previewImage" customUpload auto severity="secondary" class="p-button-outlined mt-2" choose-label="Profile picture"/>
+        <FileUpload mode="basic" @select="previewAttachment" customUpload auto severity="secondary" class="p-button-outlined mt-2" choose-label="Profile picture"/>
         <div class="card flex flex-wrap justify-center mt-2">
           <Image v-if="preview" :src="preview" alt="Image" width="250" preview/>
         </div>

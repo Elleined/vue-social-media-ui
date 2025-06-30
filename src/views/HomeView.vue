@@ -6,9 +6,10 @@ import {postService} from "@/services/post/post.service.ts";
 import {useToast} from "primevue";
 import handleError from "@/utils/axios-error.util.ts";
 import {fileClientService} from "@/services/file-client/file-client.service.ts";
-import {useQuery} from "@tanstack/vue-query";
+import {useMutation} from "@tanstack/vue-query";
 import type {Page} from "@/types/models/page/page.model.ts";
 import type {Post} from "@/types/models/post/post.model.ts";
+import {imageUtil} from "@/utils/image-preview.util.ts";
 
 const toast = useToast()
 
@@ -20,6 +21,15 @@ const attachment = ref()
 
 const paginatedPosts = ref<Page<Post>>({} as Page<Post>)
 
+const postSaveMutation = useMutation({
+  mutationFn: postService.save,
+  onSuccess: (data: number) => {
+
+  },
+  onError: (error: Error) => {
+    handleError(toast, error)
+  }
+})
 
 const save = async () => {
   try {
@@ -33,7 +43,11 @@ const save = async () => {
       return
     }
 
-    const uploadedAttachment: string = await fileClientService.upload("post", attachment.value)
+    const uploadedAttachment: string = await fileClientService.upload({
+      folder: "post",
+      attachment: attachment.value,
+    })
+
     const postId: number = await postService.save(content.value, uploadedAttachment)
     const post: Post = await postService.getById(postId)
     paginatedPosts.value.content.unshift(post)
@@ -45,23 +59,14 @@ const save = async () => {
   }
 }
 
-const previewAttachment = (event: any) => {
-  attachment.value = event.files[0]
-  const reader = new FileReader()
-
-  reader.onload = () => {
-    if (reader.result) {
-      preview.value = reader.result
-    }
-  }
-
-  reader.readAsDataURL(attachment.value)
-}
-
 const clearFields = () => {
   content.value = ''
   attachment.value = null
   preview.value = null
+}
+
+function previewAttachment(event: any): void {
+  imageUtil.previewAttachment(event, attachment, preview);
 }
 
 onMounted(async () => {
@@ -82,7 +87,7 @@ onMounted(async () => {
         <InputText id="content" v-model="content" required/>
         <label for="content">What's on your mind?</label>
       </FloatLabel>
-      <FileUpload mode="basic" @select="previewAttachment" customUpload auto severity="secondary" class="p-button-outlined" />
+      <FileUpload mode="basic" @select="imageUtil.previewAttachment($event, attachment, preview)" customUpload auto severity="secondary" class="p-button-outlined" />
       <Button type="submit" label="Post" severity="success" rounded icon="pi pi-send"/>
     </form>
     <div class="card flex flex-wrap justify-center gap-4">

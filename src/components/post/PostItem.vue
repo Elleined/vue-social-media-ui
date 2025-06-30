@@ -1,38 +1,35 @@
 <script setup lang="ts">
 
-import {computed, onMounted, ref, toRef} from "vue";
+import {computed, toRef} from "vue";
 import {userService} from "@/services/user/user.service.ts";
-import {formatDate} from "@/utils/date.util.ts";
 import {fileClientService} from "@/services/file-client/file-client.service.ts";
-import handleError from "@/utils/axios-error.util.ts";
-import {useToast} from "primevue";
-import type {User} from "@/types/models/user/user.model.ts";
 import type {Post} from "@/types/models/post/post.model.ts";
-
-const toast = useToast()
+import {useQuery} from "@tanstack/vue-query";
+import {dateUtil} from "@/utils/date.util.ts";
 
 const props = defineProps<{
   post: Post;
 }>()
 
 const post = toRef(props, "post")
-const author = ref<User>({} as User)
-const attachment = ref() // for showing the post attachment
 
-const formattedDate = computed(() => formatDate(post.value.created_at));
+const { data: author } = useQuery({
+  queryKey: ['author', post.value.author_id],
+  queryFn: () => userService.getById(post.value.author_id),
+  enabled: !!post.value.author_id, // Only fetch if author_id exists
+})
 
-onMounted(async () => {
-  try {
-    const [authorResponse, attachmentResponse] = await Promise.all([
-      userService.getById(post.value.author_id),
-      fileClientService.read("post", post.value.attachment.String)
-    ])
+const { data: attachment } = useQuery({
+  queryKey: ['attachment', post.value.attachment.String],
+  queryFn: () => fileClientService.read("post", post.value.attachment.String),
+  enabled: !!post.value.attachment.String, // Only fetch if attachment exists
+})
 
-    author.value = authorResponse
-    attachment.value = URL.createObjectURL(new Blob([attachmentResponse]));
-  } catch (e) {
-    handleError(toast, e)
-  }
+const formattedDate = computed(() => dateUtil.formatDate(post.value.created_at));
+const preview = computed(() => {
+  return attachment.value
+      ? URL.createObjectURL(new Blob([attachment.value]))
+      : null
 })
 </script>
 
@@ -40,7 +37,7 @@ onMounted(async () => {
   <div class="flex flex-col gap-5">
     <header class="flex items-start gap-3">
       <div>
-        <p class="font-bold">{{ author.first_name }} {{ author.last_name }}</p>
+        <p class="font-bold">{{ author?.first_name }} {{ author?.last_name }}</p>
         <p class="font-light">{{ formattedDate }}</p>
       </div>
     </header>
@@ -48,7 +45,7 @@ onMounted(async () => {
     <section>
       <span>{{ post.content }}</span>
       <div class="card flex flex-wrap justify-center gap-4 mt-4">
-        <Image v-if="post.attachment.Valid" :src="attachment" :alt="post.attachment.String" width="250" preview/>
+        <Image v-if="post.attachment.Valid && preview" :src="preview" :alt="post.attachment.String" width="250" preview/>
       </div>
     </section>
 

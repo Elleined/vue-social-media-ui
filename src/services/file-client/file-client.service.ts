@@ -1,4 +1,5 @@
 import {FileAPIClient} from "@/api/file.client.ts";
+import type {FileUploadRequest} from "@/types/request/file-upload.request.ts";
 
 export const fileClientService = {
 
@@ -15,19 +16,19 @@ export const fileClientService = {
         return response.data;
     },
 
-    async upload(folder: string, file: File): Promise<string> {
-        if (!folder) {
+    async upload(request: FileUploadRequest): Promise<string> {
+        if (!request.folder) {
             throw new Error("please provide folder");
         }
 
-        if (!file) {
-            throw new Error("please provide file");
+        if (!request.attachment) {
+            throw new Error("please provide attachment");
         }
 
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('file', request.attachment);
 
-        const response = await FileAPIClient().post(`/folders/${folder}/files`, formData, {
+        const response = await FileAPIClient().post(`/folders/${request.folder}/files`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
