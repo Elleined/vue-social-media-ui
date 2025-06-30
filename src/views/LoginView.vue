@@ -55,7 +55,7 @@ async function goToRegister() {
           </p>
         </div>
       </div>
-      <form @submit.prevent="login">
+      <form @submit.prevent="login()">
         <div>
           <label class="font-medium"> Email </label>
           <input

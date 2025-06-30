@@ -110,7 +110,7 @@ function previewAttachment(event: any): void {
           <Password v-model="password" inputId="password" variant="filled"  />
           <label for="password">Password</label>
         </IftaLabel>
-        <FileUpload mode="basic" @select="previewAttachment" customUpload auto severity="secondary" class="p-button-outlined mt-2" choose-label="Profile picture"/>
+        <FileUpload mode="basic" @select="previewAttachment($event)" customUpload auto severity="secondary" class="p-button-outlined mt-2" choose-label="Profile picture"/>
         <div class="card flex flex-wrap justify-center mt-2">
           <Image v-if="preview" :src="preview" alt="Image" width="250" preview/>
         </div>
