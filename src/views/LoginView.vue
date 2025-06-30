@@ -10,6 +10,7 @@ import {BASE_URL} from "@/utilities/APIClient.ts";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {useToast} from "primevue";
 import {userService} from "@/services/UserService.ts";
+import {useMutation} from "@tanstack/vue-query";
 
 const toast = useToast()
 const router = useRouter()
@@ -17,13 +18,26 @@ const router = useRouter()
 const username = ref<string>('')
 const password = ref<string>('')
 
-async function authenticate() {
-  try {
-    await userService.login(username.value, password.value)
-    await router.push('/home')
-  } catch (e) {
-    handleError(toast, e)
+interface Request {
+  username: string;
+  password: string;
+}
+
+const login = useMutation({
+  mutationFn: (request: Request) => userService.login(request.username, request.password),
+  onSuccess: async () => {
+    await router.push("/home");
+  },
+  onError: error => {
+    handleError(toast, error)
   }
+})
+
+function authenticate() {
+  login.mutate({
+    username: username.value,
+    password: password.value
+  })
 }
 
 async function goToRegister() {

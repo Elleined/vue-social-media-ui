@@ -157,12 +157,10 @@ export const userService = {
         if (!password)
             throw new Error("please provide password")
 
-        const response = await APIClient().post('/users/login', {
+        return await APIClient().post('/users/login', {
             username: username,
             password: password
         })
-
-        return response.data
     },
 
     async logout(): Promise<void> {
