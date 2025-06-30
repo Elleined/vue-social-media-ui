@@ -23,7 +23,7 @@ interface Request {
   password: string;
 }
 
-const login = useMutation({
+const loginMutation = useMutation({
   mutationFn: (request: Request) => userService.login(request.username, request.password),
   onSuccess: async () => {
     await router.push("/home");
@@ -33,8 +33,8 @@ const login = useMutation({
   }
 })
 
-function authenticate() {
-  login.mutate({
+function login() {
+  loginMutation.mutate({
     username: username.value,
     password: password.value
   })
@@ -61,7 +61,7 @@ async function goToRegister() {
           </p>
         </div>
       </div>
-      <form @submit.prevent="authenticate()">
+      <form @submit.prevent="login">
         <div>
           <label class="font-medium"> Email </label>
           <input
