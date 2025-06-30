@@ -48,7 +48,8 @@ const saveMutation = useMutation({
 
 const uploadMutation = useMutation({
   mutationFn: (request: FileUploadRequest) => fileClientService.upload(request.folder, request.attachment),
-  onSuccess: (data: string) => {
+  onSuccess: (data) => {
+    alert(data)
     saveMutation.mutate({
       firstName: firstName.value,
       lastName: lastName.value,

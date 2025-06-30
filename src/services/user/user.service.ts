@@ -18,13 +18,15 @@ export const userService = {
         if (!request.password)
             throw new Error("please provide password")
 
-        return await ApiClient().post("/users", {
+        const response = await ApiClient().post("/users", {
             first_name: request.firstName,
             last_name: request.lastName,
             email: request.username,
             password: request.password,
             attachment: request.attachment,
         })
+
+        return response.data;
     },
 
     async getById(id: number): Promise<User> {
@@ -136,10 +138,12 @@ export const userService = {
         if (!request.password)
             throw new Error("please provide password")
 
-        return await ApiClient().post('/users/login', {
+        const response = await ApiClient().post('/users/login', {
             username: request.username,
             password: request.password
         })
+
+        return response.data;
     },
 
     async logout(): Promise<void> {
