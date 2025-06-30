@@ -87,7 +87,7 @@ onMounted(async () => {
         <InputText id="content" v-model="content" required/>
         <label for="content">What's on your mind?</label>
       </FloatLabel>
-      <FileUpload mode="basic" @select="imageUtil.previewAttachment($event, attachment, preview)" customUpload auto severity="secondary" class="p-button-outlined" />
+      <FileUpload mode="basic" @select="previewAttachment" customUpload auto severity="secondary" class="p-button-outlined" />
       <Button type="submit" label="Post" severity="success" rounded icon="pi pi-send"/>
     </form>
     <div class="card flex flex-wrap justify-center gap-4">
