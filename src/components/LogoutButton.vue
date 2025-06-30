@@ -3,17 +3,23 @@ import {useRouter} from "vue-router";
 import handleError from "@/utils/axios-error.util.ts";
 import {useToast} from "primevue";
 import {userService} from "@/services/user/user.service.ts";
+import {useMutation} from "@tanstack/vue-query";
 
 const toast = useToast()
 const router = useRouter()
 
-async function logout() {
-  try {
-    await userService.logout()
+const logoutMutation = useMutation({
+  mutationFn: () => userService.logout(),
+  onSuccess: async () => {
     await router.push('/login')
-  } catch (e) {
-    handleError(toast, e)
+  },
+  onError: (error: Error) => {
+    handleError(toast, error)
   }
+})
+
+function logout() {
+  logoutMutation.mutate()
 }
 </script>
 

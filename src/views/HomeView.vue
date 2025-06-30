@@ -21,8 +21,6 @@ const attachment = ref()
 const paginatedPosts = ref<Page<Post>>({} as Page<Post>)
 
 
-
-
 const save = async () => {
   try {
     if (!attachment.value) {
@@ -65,15 +63,6 @@ const clearFields = () => {
   attachment.value = null
   preview.value = null
 }
-
-const paginatedPostQuery = () => {
-
-}
-
-const { isPending, isError, data, error } = useQuery({
-  queryKey: ['posts',],
-  queryFn: () => postService.getAllWithDefault(),
-})
 
 onMounted(async () => {
   try {
