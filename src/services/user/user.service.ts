@@ -1,7 +1,8 @@
-import {ApiClient} from "@/api/api-client.ts";
-import type {Page, User} from "@/types/model.d.ts";
-import type {LoginRequest, RegisterRequest} from "@/types/request/request";
-
+import {ApiClient} from "@/api/api.client.ts";
+import type {RegisterRequest} from "@/types/request/register.request.ts";
+import type {User} from "@/types/models/user/user.interface.ts";
+import type {Page} from "@/types/models/page/page.interface.ts";
+import type {LoginRequest} from "@/types/request/login.request.ts";
 
 export const userService = {
     async save(request: RegisterRequest): Promise<number> {

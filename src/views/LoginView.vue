@@ -6,12 +6,12 @@ import microsoft from "@/assets/microsoft.png";
 import facebook from "@/assets/facebook.png";
 
 import {ref} from "vue";
-import {BASE_URL} from "@/api/api-client.ts";
+import {BASE_URL} from "@/api/api.client.ts";
 import handleError from "@/utils/axios-error.util.ts";
 import {useToast} from "primevue";
 import {userService} from "@/services/user/user.service.ts";
 import {useMutation} from "@tanstack/vue-query";
-import type {LoginRequest} from "@/types/request/request";
+import type {LoginRequest} from "@/types/request/login.request.ts";
 
 const toast = useToast()
 const router = useRouter()

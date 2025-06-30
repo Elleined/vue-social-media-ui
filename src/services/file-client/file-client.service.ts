@@ -1,4 +1,4 @@
-import {FileAPIClient} from "@/api/file-client.ts";
+import {FileAPIClient} from "@/api/file.client.ts";
 
 export const fileClientService = {
 

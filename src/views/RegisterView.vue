@@ -7,7 +7,8 @@ import handleError from "@/utils/axios-error.util.ts";
 import {userService} from "@/services/user/user.service.ts";
 import {fileClientService} from "@/services/file-client/file-client.service.ts";
 import {useMutation} from "@tanstack/vue-query";
-import type {FileUploadRequest, RegisterRequest} from "@/types/request/request";
+import type {RegisterRequest} from "@/types/request/register.request.ts";
+import type {FileUploadRequest} from "@/types/request/file-upload.request.ts";
 
 const toast = useToast()
 const router = useRouter()
