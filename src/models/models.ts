@@ -1,6 +1,3 @@
-import type {Nullable} from "@/models/Nullable.ts";
-import type PageRequest from "@/models/paging/PageRequest.ts";
-
 export interface User {
     id: number
     created_at: Date
