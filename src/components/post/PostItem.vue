@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 import {computed, onMounted, ref, toRef} from "vue";
-import {userService} from "@/services/UserService.ts";
-import {formatDate} from "@/utilities/DateFormatter.ts";
-import {fileService} from "@/services/FileService.ts";
-import handleError from "@/utilities/AxiosErrorHandler.ts";
+import {userService} from "@/services/user/user.service.ts";
+import {formatDate} from "@/utils/date.util.ts";
+import {fileClientService} from "@/services/file-client/file-client.service.ts";
+import handleError from "@/utils/axios-error.util.ts";
 import {useToast} from "primevue";
 import type {Post, User} from "@/types/model.d.ts";
 
@@ -24,7 +24,7 @@ onMounted(async () => {
   try {
     const [authorResponse, attachmentResponse] = await Promise.all([
       userService.getById(post.value.author_id),
-      fileService.read("post", post.value.attachment.String)
+      fileClientService.read("post", post.value.attachment.String)
     ])
 
     author.value = authorResponse

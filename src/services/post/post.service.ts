@@ -1,4 +1,4 @@
-import {APIClient} from "@/utilities/APIClient.ts";
+import {ApiClient} from "@/api/api-client.ts";
 import type {Page, Post} from "@/types/model.d.ts";
 
 export const postService = {
@@ -6,7 +6,7 @@ export const postService = {
         if (!content)
             throw new Error("please provide content");
 
-        const response = await APIClient().post("/users/posts", {
+        const response = await ApiClient().post("/users/posts", {
             content: content,
             attachment: attachment
         })
@@ -32,7 +32,7 @@ export const postService = {
         if (!sortBy)
             throw new Error("please provide sort by")
 
-        const response = await APIClient().get("/users/posts", {
+        const response = await ApiClient().get("/users/posts", {
             params: {
                 page: page,
                 pageSize: size,
@@ -67,7 +67,7 @@ export const postService = {
         if (!sortBy)
             throw new Error("please provide sort by")
 
-        const response = await APIClient().get("/users/posts/all-by-user", {
+        const response = await ApiClient().get("/users/posts/all-by-user", {
             params: {
                 page: page,
                 pageSize: size,
@@ -87,7 +87,7 @@ export const postService = {
         if (!content)
             throw new Error("please provide content")
 
-        const response = await APIClient().patch(`/users/posts/${postId}/content}`, null, {
+        const response = await ApiClient().patch(`/users/posts/${postId}/content}`, null, {
             params: {
                 content: content
             }
@@ -103,7 +103,7 @@ export const postService = {
         if (!attachment)
             throw new Error("please provide attachment")
 
-        const response = await APIClient().patch(`/users/posts/${postId}/attachment}`, null, {
+        const response = await ApiClient().patch(`/users/posts/${postId}/attachment}`, null, {
             params: {
                 attachment: attachment
             }
@@ -116,7 +116,7 @@ export const postService = {
         if (!postId || postId < 0)
             throw new Error("please provide post")
 
-        const response = await APIClient().delete(`/users/posts/${postId}`)
+        const response = await ApiClient().delete(`/users/posts/${postId}`)
         return response.data
     },
 
@@ -124,7 +124,7 @@ export const postService = {
         if (!postId || postId < 0)
             throw new Error("please provide post")
 
-        const response = await APIClient().get(`/users/posts/${postId}`)
+        const response = await ApiClient().get(`/users/posts/${postId}`)
         return response.data
     }
 }

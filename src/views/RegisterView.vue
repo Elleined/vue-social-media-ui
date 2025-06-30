@@ -3,9 +3,9 @@
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 import {useToast} from "primevue";
-import handleError from "@/utilities/AxiosErrorHandler.ts";
-import {userService} from "@/services/UserService.ts";
-import {fileService} from "@/services/FileService.ts";
+import handleError from "@/utils/axios-error.util.ts";
+import {userService} from "@/services/user/user.service.ts";
+import {fileClientService} from "@/services/file-client/file-client.service.ts";
 import {useMutation} from "@tanstack/vue-query";
 import type {FileUploadRequest, RegisterRequest} from "@/types/request";
 
@@ -46,7 +46,7 @@ const saveMutation = useMutation({
 });
 
 const uploadMutation = useMutation({
-  mutationFn: (request: FileUploadRequest) => fileService.upload(request.folder, request.attachment),
+  mutationFn: (request: FileUploadRequest) => fileClientService.upload(request.folder, request.attachment),
   onSuccess: (data: string) => {
     saveMutation.mutate({
       firstName: firstName.value,

@@ -1,6 +1,6 @@
-import {FileAPIClient} from "@/utilities/FileClient.ts";
+import {FileAPIClient} from "@/api/file-client.ts";
 
-export const fileService = {
+export const fileClientService = {
 
     async delete(folder: string, file: string): Promise<void> {
         if (!folder) {

@@ -1,5 +1,5 @@
 
-import {APIClient} from "@/utilities/APIClient.ts";
+import {ApiClient} from "@/api/api-client.ts";
 import type {Emoji} from "@/types/model.d.ts";
 
 export const emojiService = {
@@ -7,7 +7,7 @@ export const emojiService = {
         if (!name)
             throw new Error("please provide name")
 
-        const response = await APIClient().post("/emojis", null, {
+        const response = await ApiClient().post("/emojis", null, {
             params: {
                 name: name,
             }
@@ -17,7 +17,7 @@ export const emojiService = {
     },
 
     async getAll(): Promise<Emoji[]> {
-        const response = await APIClient().get("/emojis")
+        const response = await ApiClient().get("/emojis")
         return response.data
     },
 
@@ -28,7 +28,7 @@ export const emojiService = {
         if (!name)
             throw new Error("please provide name")
 
-        const response = await APIClient().patch(`/emojis/${id}`, null, {
+        const response = await ApiClient().patch(`/emojis/${id}`, null, {
             params: {
                 name: name,
             }
@@ -41,7 +41,7 @@ export const emojiService = {
         if (!id || id < 0)
             throw new Error("please provide id")
 
-        const response = await APIClient().delete(`/emojis/${id}`)
+        const response = await ApiClient().delete(`/emojis/${id}`)
         return response.data
     },
 
@@ -49,7 +49,7 @@ export const emojiService = {
         if (!id || id < 0)
             throw new Error("please provide id")
 
-        const response = await APIClient().get(`/emojis/${id}`)
+        const response = await ApiClient().get(`/emojis/${id}`)
         return response.data
     },
 }

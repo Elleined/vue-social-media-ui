@@ -1,4 +1,4 @@
-import {APIClient} from "@/utilities/APIClient.ts";
+import {ApiClient} from "@/api/api-client.ts";
 import type {CommentReaction, Page} from "@/types/model.d.ts";
 
 export const commentReactionService = {
@@ -12,7 +12,7 @@ export const commentReactionService = {
         if (!emojiId || emojiId < 0)
             throw new Error("please provide emoji id");
 
-        const response = await APIClient().post(`/users/posts/${postId}/comments/${commentId}/reactions`, null, {
+        const response = await ApiClient().post(`/users/posts/${postId}/comments/${commentId}/reactions`, null, {
             params: {
                 emojiId: emojiId,
             }
@@ -46,7 +46,7 @@ export const commentReactionService = {
         if (!sortBy)
             throw new Error("please provide sort by")
 
-        const response = await APIClient().get(`/users/posts/${postId}/comments/${commentId}/reactions`, {
+        const response = await ApiClient().get(`/users/posts/${postId}/comments/${commentId}/reactions`, {
             params: {
                 page: page,
                 pageSize: size,
@@ -87,7 +87,7 @@ export const commentReactionService = {
         if (!sortBy)
             throw new Error("please provide sort by")
 
-        const response = await APIClient().get(`/users/posts/${postId}/comments/${commentId}/reactions/emoji/${emojiId}`, {
+        const response = await ApiClient().get(`/users/posts/${postId}/comments/${commentId}/reactions/emoji/${emojiId}`, {
             params: {
                 page: page,
                 pageSize: size,
@@ -109,7 +109,7 @@ export const commentReactionService = {
         if (!emojiId || emojiId < 0)
             throw new Error("please provide emoji id");
 
-        const response = await APIClient().patch(`/users/posts/${postId}/comments/${commentId}/reactions/emoji/${emojiId}`)
+        const response = await ApiClient().patch(`/users/posts/${postId}/comments/${commentId}/reactions/emoji/${emojiId}`)
         return response.data;
     },
 
@@ -120,7 +120,7 @@ export const commentReactionService = {
         if (!commentId || commentId < 0)
             throw new Error("please provide comment id");
 
-        const response = await APIClient().delete(`/users/posts/${postId}/comments/${commentId}/reactions`)
+        const response = await ApiClient().delete(`/users/posts/${postId}/comments/${commentId}/reactions`)
         return response.data;
     },
 
@@ -131,7 +131,7 @@ export const commentReactionService = {
         if (!commentId || commentId < 0)
             throw new Error("please provide comment id");
 
-        const response = await APIClient().get(`/users/posts/${postId}/comments/${commentId}/reactions/${reactionId}`)
+        const response = await ApiClient().get(`/users/posts/${postId}/comments/${commentId}/reactions/${reactionId}`)
         return response.data;
     },
 }

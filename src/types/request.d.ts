@@ -13,5 +13,5 @@ export interface RegisterRequest {
 
 interface FileUploadRequest {
     folder: string;
-    attachment: any
+    attachment: File
 }

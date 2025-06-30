@@ -1,4 +1,4 @@
-import {APIClient} from "@/utilities/APIClient.ts";
+import {ApiClient} from "@/api/api-client.ts";
 import type {Page, User} from "@/types/model.d.ts";
 import type {LoginRequest, RegisterRequest} from "@/types/request";
 
@@ -17,7 +17,7 @@ export const userService = {
         if (!request.password)
             throw new Error("please provide password")
 
-        return await APIClient().post("/users", {
+        return await ApiClient().post("/users", {
             first_name: request.firstName,
             last_name: request.lastName,
             email: request.username,
@@ -30,7 +30,7 @@ export const userService = {
         if (!id || id < 0)
             throw new Error("please provide user")
 
-        const response = await APIClient().get(`/users/id/${id}`)
+        const response = await ApiClient().get(`/users/id/${id}`)
         return response.data
     },
 
@@ -38,7 +38,7 @@ export const userService = {
         if (!email)
             throw new Error("please provide email")
 
-        const response = await APIClient().get(`/users/email/${email}`)
+        const response = await ApiClient().get(`/users/email/${email}`)
         return response.data
     },
 
@@ -60,7 +60,7 @@ export const userService = {
         if (!sortBy)
             throw new Error("please provide sort by")
 
-        const response = await APIClient().get("/users", {
+        const response = await ApiClient().get("/users", {
             params: {
                 page: page,
                 pageSize: size,
@@ -84,7 +84,7 @@ export const userService = {
         if (!attachment)
             throw new Error("please provide attachment")
 
-        const response = await APIClient().patch(`/users/${userId}/attachment`, null, {
+        const response = await ApiClient().patch(`/users/${userId}/attachment`, null, {
             params: {
                 attachment: attachment
             }
@@ -97,7 +97,7 @@ export const userService = {
         if (!userId || userId < 0)
             throw new Error("please provide user")
 
-        const response = await APIClient().patch(`/users/${userId}/status`, null, {
+        const response = await ApiClient().patch(`/users/${userId}/status`, null, {
             params: {
                 status: status
             }
@@ -113,7 +113,7 @@ export const userService = {
         if (!password)
             throw new Error("please provide password")
 
-        const response = await APIClient().patch(`/users/${userId}/password`, {
+        const response = await ApiClient().patch(`/users/${userId}/password`, {
             password: password
         })
 
@@ -124,7 +124,7 @@ export const userService = {
         if (!userId || userId < 0)
             throw new Error("please provide user")
 
-        const response = await APIClient().delete(`/users/${userId}`)
+        const response = await ApiClient().delete(`/users/${userId}`)
         return response.data
     },
 
@@ -135,14 +135,14 @@ export const userService = {
         if (!request.password)
             throw new Error("please provide password")
 
-        return await APIClient().post('/users/login', {
+        return await ApiClient().post('/users/login', {
             username: request.username,
             password: request.password
         })
     },
 
     async logout(): Promise<void> {
-        const response = await APIClient().post("/users/logout")
+        const response = await ApiClient().post("/users/logout")
         return response.data
     }
 }

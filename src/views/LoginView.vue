@@ -6,10 +6,10 @@ import microsoft from "@/assets/microsoft.png";
 import facebook from "@/assets/facebook.png";
 
 import {ref} from "vue";
-import {BASE_URL} from "@/utilities/APIClient.ts";
-import handleError from "@/utilities/AxiosErrorHandler.ts";
+import {BASE_URL} from "@/api/api-client.ts";
+import handleError from "@/utils/axios-error.util.ts";
 import {useToast} from "primevue";
-import {userService} from "@/services/UserService.ts";
+import {userService} from "@/services/user/user.service.ts";
 import {useMutation} from "@tanstack/vue-query";
 import type {LoginRequest} from "@/types/request";
 
@@ -113,9 +113,6 @@ async function goToRegister() {
           Continue with Facebook
         </a>
 
-      </div>
-      <div class="text-center">
-        <a href="javascript:void(0)" class="text-indigo-600 hover:text-indigo-500">Forgot password?</a>
       </div>
     </div>
   </main>

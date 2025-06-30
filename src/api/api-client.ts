@@ -2,7 +2,7 @@ import axios, {type AxiosInstance} from "axios";
 
 export const BASE_URL: string = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`
 
-export function APIClient(): AxiosInstance {
+export function ApiClient(): AxiosInstance {
     return axios.create({
         baseURL: BASE_URL,
         headers: {

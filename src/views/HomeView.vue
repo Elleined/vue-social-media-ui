@@ -2,11 +2,12 @@
 import {onMounted, ref} from "vue";
 import LogoutButton from "@/components/LogoutButton.vue";
 import PostList from "@/components/post/PostList.vue";
-import {postService} from "@/services/PostService.ts";
+import {postService} from "@/services/post/post.service.ts";
 import {useToast} from "primevue";
-import handleError from "@/utilities/AxiosErrorHandler.ts";
-import {fileService} from "@/services/FileService.ts";
+import handleError from "@/utils/axios-error.util.ts";
+import {fileClientService} from "@/services/file-client/file-client.service.ts";
 import type {Page, Post} from "@/types/model.d.ts";
+import {useQuery} from "@tanstack/vue-query";
 
 const toast = useToast()
 
@@ -17,6 +18,9 @@ const content = ref<string>('')
 const attachment = ref()
 
 const paginatedPosts = ref<Page<Post>>({} as Page<Post>)
+
+
+
 
 const save = async () => {
   try {
@@ -30,7 +34,7 @@ const save = async () => {
       return
     }
 
-    const uploadedAttachment: string = await fileService.upload("post", attachment.value)
+    const uploadedAttachment: string = await fileClientService.upload("post", attachment.value)
     const postId: number = await postService.save(content.value, uploadedAttachment)
     const post: Post = await postService.getById(postId)
     paginatedPosts.value.content.unshift(post)
@@ -60,6 +64,15 @@ const clearFields = () => {
   attachment.value = null
   preview.value = null
 }
+
+const paginatedPostQuery = () => {
+
+}
+
+const { isPending, isError, data, error } = useQuery({
+  queryKey: ['posts',],
+  queryFn: () => postService.getAllWithDefault(),
+})
 
 onMounted(async () => {
   try {

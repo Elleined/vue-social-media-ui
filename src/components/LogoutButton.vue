@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
-import handleError from "@/utilities/AxiosErrorHandler.ts";
+import handleError from "@/utils/axios-error.util.ts";
 import {useToast} from "primevue";
-import {userService} from "@/services/UserService.ts";
+import {userService} from "@/services/user/user.service.ts";
 
 const toast = useToast()
 const router = useRouter()
