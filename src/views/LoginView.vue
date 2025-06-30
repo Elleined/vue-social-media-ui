@@ -11,7 +11,7 @@ import handleError from "@/utils/axios-error.util.ts";
 import {useToast} from "primevue";
 import {userService} from "@/services/user/user.service.ts";
 import {useMutation} from "@tanstack/vue-query";
-import type {LoginRequest} from "@/types/request";
+import type {LoginRequest} from "@/types/request/request";
 
 const toast = useToast()
 const router = useRouter()
