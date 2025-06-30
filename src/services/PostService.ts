@@ -1,5 +1,5 @@
 import {APIClient} from "@/utilities/APIClient.ts";
-import type {Page, Post} from "@/models/models.ts";
+import type {Page, Post} from "@/types/model.d.ts";
 
 export const postService = {
     async save(content: string, attachment?: string): Promise<number> {

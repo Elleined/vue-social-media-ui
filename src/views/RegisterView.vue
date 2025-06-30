@@ -6,6 +6,8 @@ import {useToast} from "primevue";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {userService} from "@/services/UserService.ts";
 import {fileService} from "@/services/FileService.ts";
+import {useMutation} from "@tanstack/vue-query";
+import type {FileUploadRequest, RegisterRequest} from "@/types/request";
 
 const toast = useToast()
 const router = useRouter()
@@ -16,7 +18,9 @@ const username = ref<string>('')
 const password = ref<string>('')
 const attachment = ref()
 
+// for selected image preview
 const preview = ref()
+
 const previewImage = (event: any) => {
   attachment.value = event.files[0]
   const reader = new FileReader()
@@ -30,20 +34,48 @@ const previewImage = (event: any) => {
   reader.readAsDataURL(attachment.value)
 }
 
-async function register() {
-  try {
-    if (!attachment.value) {
-      await userService.save(firstName.value, lastName.value, username.value, password.value)
-      await router.push('/login')
-      return
-    }
-
-    const uploadedAttachment: string = await fileService.upload("user", attachment.value)
-    await userService.save(firstName.value, lastName.value, username.value, password.value, uploadedAttachment)
+// Mutations
+const saveMutation = useMutation({
+  mutationFn: (request: RegisterRequest) => userService.save(request),
+  onSuccess: async (data: number) => {
     await router.push('/login')
-  } catch (e) {
-    handleError(toast, e)
+  },
+  onError: (error: Error) => {
+    handleError(toast, error);
   }
+});
+
+const uploadMutation = useMutation({
+  mutationFn: (request: FileUploadRequest) => fileService.upload(request.folder, request.attachment),
+  onSuccess: (data: string) => {
+    saveMutation.mutate({
+      firstName: firstName.value,
+      lastName: lastName.value,
+      username: username.value,
+      password: password.value,
+      attachment: data,
+    })
+  },
+  onError: (error: Error) => {
+    handleError(toast, error);
+  }
+})
+
+function register(): void {
+  if (!attachment.value) {
+    saveMutation.mutate({
+      firstName: firstName.value,
+      lastName: lastName.value,
+      username: username.value,
+      password: password.value,
+    })
+    return
+  }
+
+  uploadMutation.mutate({
+    folder: "user",
+    attachment: attachment.value,
+  })
 }
 
 async function goToLogin() {

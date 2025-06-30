@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 import PostItem from "@/components/post/PostItem.vue";
-import type Page from "@/models/paging/Page.ts";
-import type {Post} from "@/models/models.ts";
+import type Page from "@/types/paging/Page.ts";
+import type {Post} from "@/types/model.d.ts";
 
 defineProps<{
   paginatedPosts: Page<Post>

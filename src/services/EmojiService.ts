@@ -1,6 +1,6 @@
 
 import {APIClient} from "@/utilities/APIClient.ts";
-import type {Emoji} from "@/models/models.ts";
+import type {Emoji} from "@/types/model.d.ts";
 
 export const emojiService = {
     async save(name: string): Promise<number> {

@@ -6,7 +6,7 @@ import {formatDate} from "@/utilities/DateFormatter.ts";
 import {fileService} from "@/services/FileService.ts";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {useToast} from "primevue";
-import type {Post, User} from "@/models/models.ts";
+import type {Post, User} from "@/types/model.d.ts";
 
 const toast = useToast()
 

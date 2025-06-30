@@ -1,5 +1,5 @@
 import {APIClient} from "@/utilities/APIClient.ts";
-import type {Page, PostReaction} from "@/models/models.ts";
+import type {Page, PostReaction} from "@/types/model.d.ts";
 
 export const postReactionService = {
 

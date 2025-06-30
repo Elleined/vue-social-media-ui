@@ -1,5 +1,5 @@
 import {APIClient} from "@/utilities/APIClient.ts";
-import type {CommentReaction, Page} from "@/models/models.ts";
+import type {CommentReaction, Page} from "@/types/model.d.ts";
 
 export const commentService = {
     async save(postId: number, content: string, attachment: string): Promise<number> {

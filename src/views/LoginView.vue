@@ -11,6 +11,7 @@ import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {useToast} from "primevue";
 import {userService} from "@/services/UserService.ts";
 import {useMutation} from "@tanstack/vue-query";
+import type {LoginRequest} from "@/types/request";
 
 const toast = useToast()
 const router = useRouter()
@@ -18,17 +19,12 @@ const router = useRouter()
 const username = ref<string>('')
 const password = ref<string>('')
 
-interface Request {
-  username: string;
-  password: string;
-}
-
 const loginMutation = useMutation({
-  mutationFn: (request: Request) => userService.login(request.username, request.password),
+  mutationFn: (request: LoginRequest) => userService.login(request),
   onSuccess: async () => {
     await router.push("/home");
   },
-  onError: error => {
+  onError: (error: Error) => {
     handleError(toast, error)
   }
 })
@@ -47,8 +43,7 @@ async function goToRegister() {
 </script>
 
 <template>
-  <main
-      class="w-full h-screen flex flex-col items-center justify-center px-4">
+  <main class="w-full h-screen flex flex-col items-center justify-center px-4">
     <div class="max-w-sm w-full text-gray-600 space-y-8">
       <div class="text-center">
         <div class="mt-5 space-y-2">
@@ -81,10 +76,8 @@ async function goToRegister() {
               class="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
           />
         </div>
-        <button
-            type="submit" class="w-full mt-4 px-4 py-2 text-white font-medium bg-indigo-600  cursor-pointer hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">
-          Log in
-        </button>
+        <Button type="submit" label="Log in" :loading="loginMutation.isPending.value"  class="w-full mt-4 px-4 py-2 text-white font-medium bg-indigo-600  cursor-pointer hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150" />
+
       </form>
       <div class="relative">
         <span class="block w-full h-px bg-gray-300"></span>

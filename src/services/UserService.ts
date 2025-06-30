@@ -1,45 +1,28 @@
 import {APIClient} from "@/utilities/APIClient.ts";
-import type {Page, User} from "@/models/models.ts";
-import {useMutation} from "@tanstack/vue-query";
+import type {Page, User} from "@/types/model.d.ts";
+import type {LoginRequest, RegisterRequest} from "@/types/request";
 
 
 export const userService = {
-    async save(
-        firstName: string,
-        lastName: string,
-        email: string,
-        password: string,
-        attachment?: string,
-    ): Promise<number> {
-
-        if (!firstName)
+    async save(request: RegisterRequest): Promise<number> {
+        if (!request.firstName)
             throw new Error("please provide first name")
 
-        if (!lastName)
+        if (!request.lastName)
             throw new Error("please provide last name")
 
-        if (!email)
+        if (!request.username)
             throw new Error("please provide email")
 
-        if (!password)
+        if (!request.password)
             throw new Error("please provide password")
 
         const response = await APIClient().post("/users", {
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            password: password,
-            attachment: attachment
-        })
-
-        return response.data
-    },
-
-    async getByJWT(jwt: string): Promise<User> {
-        const response = await APIClient().get(`/users/jwt`, {
-            headers: {
-                Authorization: `Bearer ${jwt}`
-            }
+            first_name: request.firstName,
+            last_name: request.lastName,
+            email: request.username,
+            password: request.password,
+            attachment: request.attachment,
         })
 
         return response.data
@@ -147,20 +130,16 @@ export const userService = {
         return response.data
     },
 
-    async login(
-        username: string,
-        password: string,
-    ): Promise<string> {
-
-        if (!username)
+    async login(request: LoginRequest): Promise<string> {
+        if (!request.username)
             throw new Error("please provide username")
 
-        if (!password)
+        if (!request.password)
             throw new Error("please provide password")
 
         return await APIClient().post('/users/login', {
-            username: username,
-            password: password
+            username: request.username,
+            password: request.password
         })
     },
 

@@ -6,7 +6,7 @@ import {postService} from "@/services/PostService.ts";
 import {useToast} from "primevue";
 import handleError from "@/utilities/AxiosErrorHandler.ts";
 import {fileService} from "@/services/FileService.ts";
-import type {Page, Post} from "@/models/models.ts";
+import type {Page, Post} from "@/types/model.d.ts";
 
 const toast = useToast()
 
@@ -15,6 +15,7 @@ const preview = ref()
 
 const content = ref<string>('')
 const attachment = ref()
+
 const paginatedPosts = ref<Page<Post>>({} as Page<Post>)
 
 const save = async () => {
