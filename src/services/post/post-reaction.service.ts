@@ -1,6 +1,6 @@
 import {ApiClient} from "@/api/api.client.ts";
-import type {PostReaction} from "@/types/models/post/post-reaction.interface.ts";
-import type {Page} from "@/types/models/page/page.interface.ts";
+import type {PostReaction} from "@/types/models/post/post-reaction.model.ts";
+import type {Page} from "@/types/models/page/page.model.ts";
 
 export const postReactionService = {
 

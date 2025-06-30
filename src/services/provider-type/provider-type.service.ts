@@ -1,5 +1,5 @@
 import {ApiClient} from "@/api/api.client.ts";
-import type {ProviderType} from "@/types/models/provider-type/provider-type.interface.ts";
+import type {ProviderType} from "@/types/models/provider-type/provider-type.model.ts";
 
 
 export const providerTypeService = {

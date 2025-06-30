@@ -1,7 +1,7 @@
 import {ApiClient} from "@/api/api.client.ts";
 import type {RegisterRequest} from "@/types/request/register.request.ts";
-import type {User} from "@/types/models/user/user.interface.ts";
-import type {Page} from "@/types/models/page/page.interface.ts";
+import type {User} from "@/types/models/user/user.model.ts";
+import type {Page} from "@/types/models/page/page.model.ts";
 import type {LoginRequest} from "@/types/request/login.request.ts";
 
 export const userService = {

@@ -7,8 +7,8 @@ import {useToast} from "primevue";
 import handleError from "@/utils/axios-error.util.ts";
 import {fileClientService} from "@/services/file-client/file-client.service.ts";
 import {useQuery} from "@tanstack/vue-query";
-import type {Page} from "@/types/models/page/page.interface.ts";
-import type {Post} from "@/types/models/post/post.interface.ts";
+import type {Page} from "@/types/models/page/page.model.ts";
+import type {Post} from "@/types/models/post/post.model.ts";
 
 const toast = useToast()
 

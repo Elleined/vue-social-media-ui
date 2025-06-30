@@ -43,10 +43,10 @@ async function goToRegister() {
 </script>
 
 <template>
-  <main class="w-full h-screen flex flex-col items-center justify-center px-4">
+  <main class="w-full h-screen flex flex-col items-center justify-center">
     <div class="max-w-sm w-full text-gray-600 space-y-8">
       <div class="text-center">
-        <div class="mt-5 space-y-2">
+        <div class="space-y-2">
           <h3 class="text-gray-800 text-2xl font-bold sm:text-3xl">
             Log in to your account
           </h3>

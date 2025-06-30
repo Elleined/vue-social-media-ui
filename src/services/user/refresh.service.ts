@@ -1,5 +1,5 @@
 import {ApiClient} from "@/api/api.client.ts";
-import type {Refresh} from "@/types/models/user/refresh.interface.ts";
+import type {Refresh} from "@/types/models/user/refresh.model.ts";
 
 
 export const refreshService = {

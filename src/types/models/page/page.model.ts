@@ -1,4 +1,4 @@
-import type {PageRequest} from "@/types/models/page/page-request.interface.ts";
+import type {PageRequest} from "@/types/models/page/page-request.model.ts";
 
 export interface Page<T> {
     content: T[]
