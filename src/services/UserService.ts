@@ -17,15 +17,13 @@ export const userService = {
         if (!request.password)
             throw new Error("please provide password")
 
-        const response = await APIClient().post("/users", {
+        return await APIClient().post("/users", {
             first_name: request.firstName,
             last_name: request.lastName,
             email: request.username,
             password: request.password,
             attachment: request.attachment,
         })
-
-        return response.data
     },
 
     async getById(id: number): Promise<User> {

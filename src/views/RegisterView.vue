@@ -37,7 +37,7 @@ const previewImage = (event: any) => {
 // Mutations
 const saveMutation = useMutation({
   mutationFn: (request: RegisterRequest) => userService.save(request),
-  onSuccess: async (data: number) => {
+  onSuccess: async () => {
     await router.push('/login')
   },
   onError: (error: Error) => {
@@ -121,10 +121,10 @@ async function goToLogin() {
         <div class="card flex flex-wrap justify-center mt-2">
           <Image v-if="preview" :src="preview" alt="Image" width="250" preview/>
         </div>
-        <button
-            class="w-full mt-4 px-4 py-2 text-white font-medium bg-indigo-600 cursor-pointer hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">
-          Register
-        </button>
+        <Button
+            :loading="saveMutation.isPending.value || uploadMutation.isPending.value"
+            class="w-full mt-4 px-4 py-2 text-white font-medium bg-indigo-600 cursor-pointer hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150" label="Register"
+                type="submit"/>
       </form>
     </div>
   </main>
