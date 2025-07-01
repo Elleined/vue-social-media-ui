@@ -33,24 +33,24 @@ import {
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import {VueQueryPlugin} from "@tanstack/vue-query";
 
-const app = createApp(App)
-
-app.use(PrimeVue, {
-    theme: {
-        preset: Aura
-    }
-});
-
 const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
+    .use(piniaPluginPersistedstate)
 
-app.use(VueQueryPlugin, {
-    enableDevtoolsV6Plugin: true,
-})
-app.use(pinia)
-app.use(router)
-app.use(ToastService)
+// Middlewares
+const app = createApp(App)
+    .use(PrimeVue, {
+        theme: {
+            preset: Aura
+        }
+    })
+    .use(VueQueryPlugin, {
+        enableDevtoolsV6Plugin: true,
+    })
+    .use(pinia)
+    .use(router)
+    .use(ToastService)
 
+// Components
 app.component("Card", Card)
 app.component("Button", Button)
 app.component("Dialog", Dialog)

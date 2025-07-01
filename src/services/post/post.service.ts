@@ -43,31 +43,26 @@ export const postService = {
         return response.data
     },
 
-    async getAllByAuthor(page: number,
-                         size: number,
-                         field: string,
-                         sortBy: 'asc' | 'desc',
-                         isDeleted: boolean): Promise<Page<Post>> {
-
-        if (!page || page < 0)
+    async getAllByAuthor(request: PageRequest): Promise<Page<Post>> {
+        if (!request.page || request.page < 0)
             throw new Error("please provide page number")
 
-        if (!size || size < 0)
+        if (!request.size || request.size < 0)
             throw new Error("please provide page size")
 
-        if (!field)
+        if (!request.field)
             throw new Error("please provide field")
 
-        if (!sortBy)
+        if (!request.sortBy)
             throw new Error("please provide sort by")
 
         const response = await ApiClient().get("/users/posts/all-by-user", {
             params: {
-                page: page,
-                pageSize: size,
-                field: field,
-                sortBy: sortBy,
-                isDeleted: isDeleted
+                page: request.page,
+                pageSize: request.size,
+                field: request.field,
+                sortBy: request.sortBy,
+                isDeleted: request.isDeleted
             }
         })
 

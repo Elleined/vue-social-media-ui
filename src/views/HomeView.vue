@@ -6,7 +6,7 @@ import {postService} from "@/services/post/post.service.ts";
 import {useToast} from "primevue";
 import handleError from "@/utils/axios-error.util.ts";
 import {fileClientService} from "@/services/file-client/file-client.service.ts";
-import {useMutation, useQuery, useQueryClient, keepPreviousData } from "@tanstack/vue-query";
+import {keepPreviousData, useMutation, useQuery, useQueryClient} from "@tanstack/vue-query";
 import {imageUtil} from "@/utils/image-preview.util.ts";
 import type {PageRequest} from "@/types/request/page.request.ts";
 
@@ -29,6 +29,7 @@ const postSaveMutation = useMutation({
     content.value = ''
     attachment.value = null
     preview.value = null
+    queryClient.invalidateQueries({queryKey: ['paginatedPosts']})
   },
   onError: (error: Error) => {
     handleError(toast, error)
@@ -66,30 +67,36 @@ function previewAttachment(event: any): void {
   imageUtil.previewAttachment(event, attachment, preview);
 }
 
-// for fetching posts
-const page = ref<PageRequest>({
-  page: 1,
-  size: 10,
-  field: "created_at",
-  sortBy: "desc",
-  isDeleted: false,
-})
-const { isPending, isError, data: paginatedPosts, error } = useQuery({
-  queryKey: ['paginatedPost', page],
-  queryFn: () => postService.getAll(page.value),
-  placeholderData: keepPreviousData
-})
+function getAllQuery() {
+  const page = ref<PageRequest>({
+    page: 1,
+    size: 10,
+    field: "created_at",
+    sortBy: "desc",
+    isDeleted: false,
+  })
+
+  return useQuery({
+    queryKey: ['paginatedPosts', page],
+    queryFn: () => postService.getAll(page.value),
+    placeholderData: keepPreviousData
+  })
+}
+
+const {isPending, isError, data: paginatedPosts, error} = getAllQuery();
+
 </script>
 
 <template>
   <header class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-4 space-y-4 mb-5 mt-4">
     <form class="flex justify-center items-center gap-4" @submit.prevent="save()">
-<!--      <UserAvatar v-if="currentUserStore.getPrincipal().attachment.Valid" :url="`http://localhost:8090/folders/user/files/${currentUserStore.getPrincipal().attachment.String}`" />-->
+      <!--      <UserAvatar v-if="currentUserStore.getPrincipal().attachment.Valid" :url="`http://localhost:8090/folders/user/files/${currentUserStore.getPrincipal().attachment.String}`" />-->
       <FloatLabel>
         <InputText id="content" v-model="content" required/>
         <label for="content">What's on your mind?</label>
       </FloatLabel>
-      <FileUpload mode="basic" @select="previewAttachment" customUpload auto severity="secondary" class="p-button-outlined" />
+      <FileUpload mode="basic" @select="previewAttachment" customUpload auto severity="secondary"
+                  class="p-button-outlined"/>
       <Button type="submit" label="Post" severity="success" rounded icon="pi pi-send"/>
     </form>
     <div class="card flex flex-wrap justify-center gap-4">
@@ -103,11 +110,14 @@ const { isPending, isError, data: paginatedPosts, error } = useQuery({
     <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
     <div class='h-8 w-8 bg-black rounded-full animate-bounce'></div>
   </div>
-
   <section class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-4 space-y-4" v-else>
     <PostList :paginatedPosts="paginatedPosts!" v-if="paginatedPosts?.content.length != 0"/>
     <div v-else class="text-center font-bold font-italic text-2xl">No posts yet!</div>
   </section>
+
+  <Message severity="error" v-if="isError">
+    {{ error?.message }}
+  </Message>
 
   <LogoutButton/>
   <Toast/>
