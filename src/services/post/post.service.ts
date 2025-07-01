@@ -2,6 +2,7 @@ import {ApiClient} from "@/api/api.client.ts";
 import type {Page} from "@/types/models/page/page.model.ts";
 import type {Post} from "@/types/models/post/post.model.ts";
 import type {PostRequest} from "@/types/request/post.request.ts";
+import type {PageRequest} from "@/types/request/page.request.ts";
 
 export const postService = {
     async save(request: PostRequest): Promise<number> {
@@ -16,39 +17,30 @@ export const postService = {
         return response.data
     },
 
-    async getAll(page: number,
-                 size: number,
-                 field: string,
-                 sortBy: 'asc' | 'desc',
-                 isDeleted: boolean): Promise<Page<Post>> {
-
-        if (!page || page < 0)
+    async getAll(request: PageRequest): Promise<Page<Post>> {
+        if (!request.page || request.page < 0)
             throw new Error("please provide page number")
 
-        if (!size || size < 0)
+        if (!request.size || request.size < 0)
             throw new Error("please provide page size")
 
-        if (!field)
+        if (!request.field)
             throw new Error("please provide field")
 
-        if (!sortBy)
+        if (!request.sortBy)
             throw new Error("please provide sort by")
 
         const response = await ApiClient().get("/users/posts", {
             params: {
-                page: page,
-                pageSize: size,
-                field: field,
-                sortBy: sortBy,
-                isDeleted: isDeleted
+                page: request.page,
+                pageSize: request.size,
+                field: request.field,
+                sortBy: request.sortBy,
+                isDeleted: request.isDeleted
             }
         })
 
         return response.data
-    },
-
-    async getAllWithDefault(): Promise<Page<Post>> {
-        return await this.getAll(1, 10, "created_at", "desc", false)
     },
 
     async getAllByAuthor(page: number,

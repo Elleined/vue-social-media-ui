@@ -1,25 +1,24 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {ref} from "vue";
 import LogoutButton from "@/components/LogoutButton.vue";
 import PostList from "@/components/post/PostList.vue";
 import {postService} from "@/services/post/post.service.ts";
 import {useToast} from "primevue";
 import handleError from "@/utils/axios-error.util.ts";
 import {fileClientService} from "@/services/file-client/file-client.service.ts";
-import {useMutation} from "@tanstack/vue-query";
-import type {Page} from "@/types/models/page/page.model.ts";
-import type {Post} from "@/types/models/post/post.model.ts";
+import {useMutation, useQuery, useQueryClient, keepPreviousData } from "@tanstack/vue-query";
 import {imageUtil} from "@/utils/image-preview.util.ts";
+import type {PageRequest} from "@/types/request/page.request.ts";
 
 const toast = useToast()
+const queryClient = useQueryClient()
 
 // for selected image preview
 const preview = ref()
 
+// for saving post
 const content = ref<string>('')
 const attachment = ref()
-
-const paginatedPosts = ref<Page<Post>>({} as Page<Post>)
 
 const postSaveMutation = useMutation({
   mutationFn: postService.save,
@@ -67,14 +66,19 @@ function previewAttachment(event: any): void {
   imageUtil.previewAttachment(event, attachment, preview);
 }
 
-onMounted(async () => {
-  try {
-    paginatedPosts.value = await postService.getAllWithDefault()
-  } catch (e) {
-    handleError(toast, e)
-  }
+// for fetching posts
+const page = ref<PageRequest>({
+  page: 1,
+  size: 10,
+  field: "created_at",
+  sortBy: "desc",
+  isDeleted: false,
 })
-
+const { isPending, isError, data: paginatedPosts, error } = useQuery({
+  queryKey: ['paginatedPost', page],
+  queryFn: () => postService.getAll(page.value),
+  placeholderData: keepPreviousData
+})
 </script>
 
 <template>
@@ -93,12 +97,18 @@ onMounted(async () => {
     </div>
   </header>
 
-  <section class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-4 space-y-4">
-    <PostList :paginatedPosts="paginatedPosts" v-if="paginatedPosts.content?.length != 0"/>
+  <div class='flex space-x-2 justify-center items-center bg-white h-screen dark:invert' v-if="isPending">
+    <span class='sr-only'>Loading...</span>
+    <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+    <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+    <div class='h-8 w-8 bg-black rounded-full animate-bounce'></div>
+  </div>
+
+  <section class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-4 space-y-4" v-else>
+    <PostList :paginatedPosts="paginatedPosts!" v-if="paginatedPosts?.content.length != 0"/>
     <div v-else class="text-center font-bold font-italic text-2xl">No posts yet!</div>
   </section>
 
-  <a href="https://www.flaticon.com/free-icons/facebook" title="facebook icons">Facebook icons created by QudaDesign - Flaticon</a>
   <LogoutButton/>
   <Toast/>
 

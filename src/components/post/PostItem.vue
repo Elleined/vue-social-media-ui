@@ -22,7 +22,7 @@ const { data: author } = useQuery({
 const { data: attachment } = useQuery({
   queryKey: ['attachment', post.value.attachment.String],
   queryFn: () => fileClientService.read("post", post.value.attachment.String),
-  enabled: !!post.value.attachment.String, // Only fetch if attachment exists
+  enabled: post.value.attachment.Valid, // Only fetch if attachment exists
 })
 
 const formattedDate = computed(() => dateUtil.formatDate(post.value.created_at));
